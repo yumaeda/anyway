@@ -1,0 +1,50 @@
+[
+    {
+        "name": "yumaeda/shipping-fee",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yumaeda/shipping-fee.git",
+            "reference": "a1319426c57139a6c1f5eeb3ae0afb30d1f02480"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yumaeda/shipping-fee/zipball/a1319426c57139a6c1f5eeb3ae0afb30d1f02480",
+            "reference": "a1319426c57139a6c1f5eeb3ae0afb30d1f02480",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6.5"
+        },
+        "time": "2018-05-15T15:57:00+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Yumaeda\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Yukitaka Maeda",
+                "homepage": "https://github.com/yumaeda",
+                "role": "Developer"
+            }
+        ],
+        "description": "Calculates shipping fee upon delivery in Japan based on various conditions",
+        "homepage": "https://github.com/yumaeda/shipping-fee",
+        "keywords": [
+            "fee",
+            "japan",
+            "shipping"
+        ]
+    }
+]

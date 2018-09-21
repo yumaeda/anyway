@@ -1,0 +1,28 @@
+{
+    "name": "yumaeda/shipping-fee",
+    "description": "Calculates shipping fee upon delivery in Japan based on various conditions",
+    "keywords": ["shipping", "fee", "japan"],
+    "homepage": "https://github.com/yumaeda/shipping-fee",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yukitaka Maeda",
+            "homepage": "https://github.com/yumaeda",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "yumaeda@gmail.com"
+    },
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yumaeda\\": "src/"
+        }
+    }
+}

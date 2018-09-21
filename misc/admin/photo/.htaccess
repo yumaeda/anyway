@@ -1,0 +1,9 @@
+AuthUserFile "C:/AppServ/Apache2.2/pwd/pwds"
+AuthGroupFile "C:/AppServ/Apache2.2/pwd/groups"
+AuthName "Photo Management of Ofuro Web site"
+AuthType Basic
+
+<Limit GET POST>
+require group ofuro_admin
+</Limit>
+

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>Upload PDF</title>
+        <style>
+
+        *
+        {
+            padding: 0;
+            margin: 0;
+        }
+
+        body
+        {
+            width: 100%;
+        }
+
+        #wrapper-pane
+        {
+            text-align: center;
+            width: 995px;
+        }
+
+        #drop-pane
+        {
+            margin-top: 20px;
+            margin-left: 220px;
+            width: 550px;
+            height: 200px;
+            border: 2px dashed grey;
+
+            overflow: scroll;
+        }
+
+        .drop-text
+        {
+            margin-top: 70px;
+            color: grey;
+            font-size: 25px;
+        }
+
+        img.home-img
+        {
+            width: 50px;
+        }
+
+        </style>
+    </head>
+    <body>
+        <a href="http://sei-ya.jp/admin_home.html"><img class="home-img" src="//anyway-grapes.jp/images/adminHome.png" title="管理者ホームに戻る" /></a>
+        <div id="wrapper-pane">
+            <div id="customer-select-pane">
+            </div>
+            <div id="drop-pane">
+                <h3 class="drop-text">Drag and drop PDF files here.</h3>
+                <p>
+                PDFファイルをドラッグ＆ドロップしてください。
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<script type="text/javascript">
+
+function renderCustomerSelect()
+{
+    $.ajax(
+    {
+        url: '../get_business_customer_names.php',
+        dataType: 'json',
+        success: function(rgobjCustomer)
+        {
+            var html        = '',
+                cCustomer   = rgobjCustomer.length,
+                objCustomer = null;
+
+            html = '<span>卸先:&nbsp;</span><select id="customer-select">';
+
+            for (var i = 0; i < cCustomer; ++i)
+            {
+                objCustomer = rgobjCustomer[i];
+                html += '<option value="' + objCustomer.id + '">' + objCustomer.name + '</option>';
+            }
+
+            html += '</select>';
+
+            $('div#customer-select-pane').html(html);
+        },
+
+        error: function() {}
+    });
+}
+
+$(document).ready(function()
+{
+    renderCustomerSelect();
+
+    $('#drop-pane').on('dragenter', function(e)
+    {
+        e.preventDefault();
+        $(this).css('background', '#BBD5B8');
+    });
+
+    $('#drop-pane').on('dragover', function(e)
+    {
+        e.preventDefault();
+    });
+
+    $('#drop-pane').on('drop', function(e)
+    {
+        $(this).css('background', '#D8F9D3');
+        e.preventDefault();
+
+        var rgobjFile = e.originalEvent.dataTransfer.files;
+        createFormData(rgobjFile);
+    });
+});
+
+function createFormData(rgobjFile)
+{
+    var pdfFormData = new FormData(),
+        cFile       = rgobjFile.length;
+
+    for (var i = 0; i < cFile; ++i)
+    {
+        pdfFormData.append('userFiles[]', rgobjFile[i]);
+    }
+
+    pdfFormData.append('customer_id', $('select#customer-select').val());
+    uploadFormData(pdfFormData);
+}
+
+function uploadFormData(formData) 
+{
+    $.ajax(
+    {
+        url: './upload_pdfs.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data)
+        {
+            $('#drop-pane').html(data);
+        }
+    });
+}
+
+</script>
+

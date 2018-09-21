@@ -1,0 +1,5 @@
+{
+    "require": {
+        "yumaeda/shipping-fee": "1.0.*"
+    }
+}

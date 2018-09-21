@@ -1,0 +1,19 @@
+$countries: france, austria, rumania, germany, new_zealand, italy, united_states, spain, japan, australia, south_africa, united_kingdom, croatia, portugal, canada, ukraine, argentina, switzerland, bulgaria, hungary, lebanon, chile, taiwan, moldova, india, costa_rica, colombia, malawi, turkey, greece, georgia, scotland;
+
+img.stainedFlag
+{
+    width: 28px;
+    height: 16px;
+    border: 0;
+
+    background-size: 28px 16px;
+}
+
+@each $country in $countries
+{
+    img.#{$country}Img
+    {
+        background-image: url('../images/flags/#{$country}.png');
+    }
+}
+

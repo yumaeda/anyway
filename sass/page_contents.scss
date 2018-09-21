@@ -1,0 +1,79 @@
+div#page-contents
+{
+    float: left;
+
+    h4
+    {
+        padding: 15px 0 15px 0;
+
+        font:
+        {
+            size: 18px;
+            weight: bold;
+        }
+    }
+
+    table
+    {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    > table
+    {
+        width: 95%;
+        margin:
+        {
+            left: auto;
+            right: auto;
+        }
+    }
+
+    img
+    {
+        border: 1px solid rgb(224, 224, 224);
+    }
+
+    ul.searched-wine-list
+    {
+        margin-bottom: 15px;
+
+        li
+        {
+            border-bottom: 1px dashed rgb(224, 224, 224);
+            padding-bottom: 20px;
+        }
+    }
+
+    ol
+    {
+        margin-bottom: 30px;
+
+        li
+        {
+            line-height: 30px;
+        }
+    }
+}
+
+select.filter-select
+{
+    background-color: rgb(80, 80, 80);
+    color: white;
+
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    height: 34px;
+    -webkit-appearance: none;
+}
+
+div.banner-pane
+{
+    overflow: auto;
+    overflow-x: hidden;
+}
+

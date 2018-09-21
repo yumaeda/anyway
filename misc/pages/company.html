@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>会社概要</title>
+        <link rel="stylesheet" type="text/css" href="./common.css" />
+        <style type="text/css">
+
+        div.contents a
+        {
+            font-size: 13px;
+            color: rgb(80, 80, 80);
+
+            text-decoration: none;
+        }
+
+        div.contents a:hover
+        {
+            color: brown;
+            text-decoration: underline;
+        }
+
+        table
+        {
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        table td
+        {
+            padding: 3px 15px 3px 15px;
+            border: 1px solid rgb(128, 128, 128);
+        }
+
+        img.shopImg
+        {
+            width: 250px;
+        }
+
+        </style>
+    </head>
+    <body>
+        <div class="contents">
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function generateTableHtml()
+{
+    var html =
+        '<table>' +
+            '<tr>' +
+                '<td>会社名</td>' +
+                '<td>有限会社　誠屋</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>設立年月日</td>' +
+                '<td>平成10年1月26日</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>資本金</td>' +
+                '<td>300万円</td>' +
+            '</tr>' +
+                '<td>所在地</td>' +
+                '<td>〒156-0044 東京都世田谷区赤堤 4-45-10 B1F</td>' +
+            '<tr>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>電話番号</td>' +
+                '<td>03-5300-6007</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>FAX番号</td>' +
+                '<td>03-3325-4989</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>メールアドレス</td>' +
+                '<td>info@sei-ya.jp</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>URL</td>' +
+                '<td>http://sei-ya.jp</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>役員構成</td>' +
+                '<td>' +
+                    '白木圭祐（代表取締役）' +
+                    '<br />' +
+                    '高橋寿典（取締役）' +
+                '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>事業内容</td>' +
+                '<td>飲食店経営、酒販店経営</td>' +
+            '</tr>' +
+        '</table>';
+
+    return html;
+}
+
+
+function generateCompanyDetailHtml()
+{
+    var html = '1994年下高井戸にオープンした厳選した日本酒、ワインを扱う老舗「居酒屋おふろ」から始まり、ワインを専門に扱い和食と合わせて楽しんで頂く「Wine Bar Mitsu-Getsu」を2007年にスタートしました。Mitsu-Getsuには3000本ストックしておけるワインセラーを設けていましたが、お客様に今まで以上に楽しんで頂くために世界中のワインをストックするセラーの増設が必要だという考えに至りました。それに加え、今まで培ったワインの知識を生かし、近隣にお住まいの方にご自宅で気軽に楽しんで頂くワインを紹介していこうという経緯の元、2011年下高井戸に「ワインショップAnyway-Grpaes」をオープン。2014年には更なるセラー拡大の為に姉妹店Mitsu-Getsuとともに経堂に移転し、2015年よりインターネット販売を開始致しました。<br /><br />' +
+                '規模は拡大しましたが、コンセプトは変わらず、料理とともに楽しんで頂きたい、日常的に楽しんで頂けるワインをご紹介したいとの思いから一部のグラン・ヴァンはインターネット上での小売価格より姉妹店のレストラン価格の方がお安くなっております。我々はこの料理とともに楽しんで頂きたいというコンセプトを大事にしており、レストラン価格でインターネット販売を行う事はございませんので、是非とも当姉妹店に脚を運んで頂き、四季折々の料理と合わせて楽しんで頂きたいと考えております。<br /><br />' +
+                '何卒、ご理解の程、よろしくお願い致します。';
+
+    return html;
+}
+
+
+function generateShopInfoHtml()
+{
+    var html =
+        '<a target="_blank" href="http://sei-ya.jp/ofuro">' +
+            '<span>居酒屋おふろ</span>' +
+            '<br />' +
+            '<br />' +
+            '<img src="http://sei-ya.jp/ofuro/images/ofuro_inside4.jpg" alt="居酒屋おふろ" class="shopImg" />' +
+        '</a>' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<span>Conceptual Wine Boutique Anyway-Grapes</span>' +
+        '<br />' +
+        '<br />' +
+        '<img src="http://sei-ya.jp/anyway-grapes/images/anyway_inside.jpg" alt="Conceptual Wine Boutique Anyway-Grapes" class="shopImg" />' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<br />' +
+        '<a target="_blank" href="http://sei-ya.jp/mitsu-getsu">' +
+            '<span>Japanese Food & Wine Mitsu-Getsu</span>' +
+            '<br />' +
+            '<br />' +
+            '<img src="http://sei-ya.jp/mitsu-getsu/images/mitsugetsu_inside1.jpg" alt="Japanese Food & Wine Mitsu-Getsu" class="shopImg" />' +
+        '</a>';
+ 
+    return html;
+}
+
+$(document).ready(function()
+{
+    var html       = '',
+        tableHtml  = generateTableHtml(),
+        detailHtml = generateCompanyDetailHtml(),
+        shopHtml   = generateShopInfoHtml();
+        
+    $('div.contents').html(tableHtml + detailHtml + '<br /><br /><br />' + shopHtml);
+});
+
+</script>
+

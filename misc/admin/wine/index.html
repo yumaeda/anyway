@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>Wine Menu Generation Tool</title>
+        <script type="text/javascript">
+
+        document.createElement('header');
+
+        </script>
+        <link rel="stylesheet" type="text/css" href="./winemgr.min.css" />
+    </head>
+    <body>
+        <header>
+        </header>
+        <form action="./winelist.php" method="POST">
+            <select id="pageSelect" name="page">
+                <option value="-1" disabled="disabled" selected="selected">Select a page.</option>
+                <option value="999">Shop Price</option>
+                <option value="1000">Wholesale Price</option>
+                <option value="1001">Restaurant Price</option>
+            </select>
+            <div class="contents">
+            </div>
+            <button id="printBtn" type="submit" style="display:none;">Print</button>
+        </form>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="./winemgr.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+    RecommendedWineContents.siteName           = 'anyway-grapes';
+    RecommendedWineContents.dbTable            = 'anyway_recommended_wines';
+    RecommendedWineContents.fAllowPrintForLess = true;
+
+    loadResourceStrings('{0}/{1}/resources'.format(getRootFolderUrl(), RecommendedWineContents.siteName));
+    $('select#pageSelect').change(RecommendedWineContents.onPageSelectChange);
+
+    var imgTag = new ImageTag('{0}/{1}/images/adminHome.png'.format(getRootFolderUrl(), RecommendedWineContents.siteName));
+    imgTag.addClass('adminHomeImg');
+
+    $('header').html('<a href="{0}/admin_home.html">{1}</a>'.format(getRootFolderUrl(), imgTag.toHtml()));
+});
+
+</script>
+

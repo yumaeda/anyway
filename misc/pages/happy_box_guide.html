@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>福箱のご注文方法</title>
+        <style type="text/css">
+
+        *
+        {
+            padding: 0;
+            margin: 0;
+        }
+
+        body
+        {
+            width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+
+            padding: 10px 0 10px 0;
+
+            color: rgb(80, 80, 80);
+            font-family: "Kozuka Gothic Pro R", "Meiryo UI", sans-serif;
+            font-size: 12px;
+        }
+
+        h1
+        {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        h2
+        {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        h3
+        {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        p.detailParagraph
+        {
+            margin-bottom: 30px;
+        }
+
+        span.noticeSpan
+        {
+            font-size: 11px;
+            color: darkred;
+        }
+
+        img.iconImg
+        {
+            width: 35px;
+        }
+
+        img.screenShot
+        {
+            width: 700px;
+            margin-top: 15px;
+            border: 2px solid rgb(80, 80, 80);
+        }
+
+        </style>
+    </head>
+    <body>
+        <div class="contents">
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function generateContentsHtml()
+{
+    var html =
+        '<h1>福箱の注文方法</h1>' +
+        '<br />' +
+        '<h2>Step1&gt;&nbsp;対象商品を探す。</h2>' +
+        '<p class="detailParagraph">' +
+            '「福箱」は、"福"のマークの付いたアイテム全てが対象となります。下記の検索方法を参考にして、対象アイテムをお探しください。<br />' +
+            '1. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=ranking">月間ランキング</a>の中から対象アイテムを探す。<br />' +
+            '2. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=recommended">お勧めワイン</a>の中から対象アイテムを探す。<br />' +
+            '3. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=search">詳細検索</a>を利用して対象アイテムを探す。<br />' +
+
+            '<h3>種類で探す</h3>' +
+            '1. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&type=Mousseux">スパークリングワイン</a>の中から対象アイテムを探す。<br />' +
+            '2. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&type=Champagne&country=France&region=Champagne">シャンパーニュ</a>の中から対象アイテムを探す。<br />' +
+            '3. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&type=Blanc">白ワイン</a>の中から対象アイテムを探す。<br />' +
+            '4. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&type=Ros%C3%A9">ロゼワイン</a>の中から対象アイテムを探す。<br />' +
+            '5. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&type=Rouge">赤ワイン</a>の中から対象アイテムを探す。<br /><br />' +
+
+            '<h3>価格帯で探す</h3>' +
+            '1. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=1000&max=1999">1000円台のワイン</a>の中から対象アイテムを探す。<br />' +
+            '2. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=2000&max=2999">2000円台のワイン</a>の中から対象アイテムを探す。<br />' +
+            '3. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=3000&max=3999">3000円台のワイン</a>の中から対象アイテムを探す。<br />' +
+            '4. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=4000&max=4999">4000円台のワイン</a>の中から対象アイテムを探す。<br />' +
+            '5. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=5000&max=5999">5000円台のワイン</a>の中から対象アイテムを探す。<br />' +
+            '6. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=price&min=10000&max=999999">10000円以上のワイン</a>の中から対象アイテムを探す。<br /><br />' +
+
+            '<h3>国で探す</h3>' +
+            '1. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=France">フランスワイン</a>の中から対象アイテムを探す。<br />' +
+            '2. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Italy">イタリアワイン</a>の中から対象アイテムを探す。<br />' +
+            '3. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Germany">ドイツワイン</a>の中から対象アイテムを探す。<br />' +
+            '4. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Austria">オーストリアワイン</a>の中から対象アイテムを探す。<br />' +
+            '5. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Spain">スペインワイン</a>の中から対象アイテムを探す。<br />' +
+            '6. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Portugal">ポルトガルワイン</a>の中から対象アイテムを探す。<br />' +
+            '7. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=South%20Africa">南アフリカワイン</a>の中から対象アイテムを探す。<br />' +
+            '8. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=Australia">オーストラリアワイン</a>の中から対象アイテムを探す。<br />' +
+            '9. <a target="_blank" href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=wine_type&country=New%20Zealand">ニュージーランドワイン</a>の中から対象アイテムを探す。<br />' +
+        '</p>' +
+        '<br />' +
+
+        '<h2>Step2&gt;&nbsp;商品を福箱に入れる。</h2>' +
+        '<p class="detailParagraph">' +
+            'ご希望の数量を指定後、<img class="iconImg" src="http://anyway-grapes.jp/images/happy_box_icon.png" /> のアイコンをクリックして下さい。福箱に商品が追加されます。' +
+        '</p>' +
+
+        '<h2>Step3&gt;&nbsp;福箱の中の商品のご確認。</h2>' +
+        '<p class="detailParagraph">' +
+            'メインメニューの「福箱」ボタンをクリックして下さい。' +
+            '福箱に入れた商品をご確認いただき、「レジに進む」ボタンをクリックして下さい。買い物を続けられる場合には、「買い物を続ける」ボタンをクリックして下さい。' +
+            '<br />' +
+            '<img class="screenShot" src="../images/happy_box_guide/step3.png" /><br />' +
+            '<span>図１）福箱ページ</span><br />' +
+        '</p>' +
+
+        '<h2>Step4&gt;&nbsp;お客様情報の入力。</h2>' +
+        '<p class="detailParagraph">' +
+            'お客様情報をご記入いただき、画面下の「次へ&gt;&gt;」ボタンをクリックして下さい。' +
+            '<br /><br />' +
+            '<span class="noticeSpan">※ 領収書がご入用の場合や、ギフトボックスと一緒に複数のワインをご購入された場合は、備考欄にご記入お願いします。</span>' +
+            '<br />' +
+            '<img class="screenShot" src="../images/user_guide/step4.png" /><br />' +
+            '<span>図２）お客様情報の入力ページ<br />' +
+        '</p>' +
+
+        '<h2>Step5&gt;&nbsp;配送情報の入力。</h2>' +
+        '<p class="detailParagraph">' +
+            'Step4で記入したご住所宛に発送する場合には、”ご自宅に配送する” をチェックして下さい。' +
+            '他の宛先に発送する場合には、配送先の情報をご記入いただき、画面下の「次へ&gt;&gt;」ボタンをクリックして下さい。' +
+            '<br />' +
+            '<img class="screenShot" src="../images/user_guide/step5.png" /><br />' +
+            '<span>図３）配送情報の入力ページ<br />' +
+        '</p>' +
+
+        '<h2>Step6&gt;&nbsp;決済方法の選択。</h2>' +
+        '<p class="detailParagraph">' +
+            '決済方法を選択後、画面下の「次へ&gt;&gt;」ボタンをクリックして下さい。' +
+            '<br /><br />' +
+            '<span class="noticeSpan">※この時点では、クレジットカードからの引き落としは行われません。</span>' +
+            '<br />' +
+            '<img class="screenShot" src="../images/user_guide/step6.png" /><br />' +
+            '<span>図４）決済方法の選択ページ<br />' +
+        '</p>' +
+
+        '<h2>Step7&gt;&nbsp;注文内容の確認。</h2>' +
+        '<p class="detailParagraph">' +
+            'お客様情報、配送情報、決済方法をご確認いただき、「注文を確定する」ボタンをクリックして下さい。' +
+            '<br /><br />' +
+            '<span class="noticeSpan">※ご記入内容に間違いがある場合は、「&lt;&lt;戻る」ボタンをクリックして下さい。</span>' +
+        '</p>' +
+
+        '<h2>Step8&gt;&nbsp;注文確認メールを受信。</h2>' +
+        '<p class="detailParagraph">' +
+            'Step4でご記入されたメールアドレスに注文確認メールが送信されれば、注文のお手続きは終了です。' +
+            '<br /><br />' +
+            '<span class="noticeSpan">※注文確認メールが送信されない場合は、「迷惑メール」として振り分けられていないか確認後、mail@anyway-grapes.jp までご連絡下さい。</span>' +
+        '</p>' +
+
+        '<h2>[在庫の確保について]</h2>' +
+        '<p class="detailParagraph">' +
+            '商品をカートに入れた段階では在庫の確保はしておりません。 システム上の在庫は、ご注文手続き完了時点で確保いたしますが、実際の商品の在庫確保はご注文手続き完了後、「Conceputual Wine Boutique Anyway-Grapes: ご注文の確認」メールを送信した後順次確保いたします。' +
+            '<br /><br />' +
+            '<span class="noticeSpan">※ オンラインショップと実店舗の在庫は共通のため、ご注文手続き中、または「Conceputual Wine Boutique Anyway-Grapes: ご注文の確認」メール送信後から商品の在庫を確保するまでの間に、店頭で商品が売れてしまい在庫が確保できない場合がございます。</span><br />' +
+            '<span class="noticeSpan">※ 万が一在庫を確保できなかった場合には、メールにてご連絡いたします。</span><br />' +
+            '<span class="noticeSpan">※ 銀行振込みの場合、ご入金の確認が取れ次第在庫の確保をいたします。</span>' +
+        '</p>' +
+        
+        '<h2>[商品の到着後]</h2>' +
+        '<p class="detailParagraph">' +
+            'ワインが到着しましたら、届いたワインに間違いまたは欠損がないかご確認お願い致します。欠損、間違いがあった場合、商品到着翌日までに必ずご連絡ください。当店にて送料負担の上、交換させて頂きます。<br /><br />' +
+            '翌日までにご連絡いただけない場合、対応することが困難になります。その場合もお手数ですが、届いたワインはセラーまたは日の当らない冷温場所に保管お願い致します。'+
+        '</p>';
+
+    return html;
+}
+
+$(document).ready(function()
+{
+    $('div.contents').html(generateContentsHtml());
+});
+
+</script>
+

@@ -1,0 +1,8 @@
+AuthUserFile /usr/home/seiyaltd/etc/pwd/pwds
+AuthGroupFile /usr/home/seiyaltd/etc/pwd/groups
+AuthName "Administration of Anyway-Grapes Wines"
+AuthType Basic
+<Limit GET POST>
+require group anyway_admin
+</Limit>
+

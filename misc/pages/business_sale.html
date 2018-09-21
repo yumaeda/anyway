@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>業務販売</title>
+        <link rel="stylesheet" type="text/css" href="./common.css" />
+        <style type="text/css">
+
+        body
+        {
+            width: 100%;
+        }
+
+        div.contents
+        {
+            width: 600px;
+            color: white;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        div.contents > h2
+        {
+            font-family: "Kozuka Gothic Pro EL", "Kozuka Gothic Pro L", "Meiryo UI", sans-serif;
+            font-size: 12px;
+
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        div.contents ul
+        {
+            list-style-type: none;
+        }
+
+        div.contents ul li
+        {
+            margin-left: 15px;
+        }
+
+        div.contents ol
+        {
+            margin-top: 5px;
+        }
+
+        div.contents ol li
+        {
+            margin-left: 30px;
+        }
+
+        </style>
+    </head>
+    <body>
+        <div class="contents">
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function generateContentsHtml()
+{
+    var html =
+        '<h2>■ 業務販売の開始までの流れ</h2>' +
+        '<p>' +
+            '<ol>' +
+                '<li>メール(mail@anyway-grapes.jp)もしくはお電話(03-6413-9737)にてお問い合わせください。</li>' +
+                '<li>お問い合わせの後、下記の必要項目と飲食店許可書のコピーをFAX(03-6413-9736)にてお送りください。</li>' +
+                '<li>お客様から頂いた情報と飲食店許可書を確認の上、審査を行い、メールで結果をお知らせいたします。</li>' +
+            '</ol>' +
+        '</p>' +
+        '<h2>■ 申し込みの際の必要項目</h2>' +
+        '以下の必要項目を飲食店許可書のコピーと一緒に、FAX(03-6413-9736)にてご送信ください。' +
+        '<p>' +
+            '<ul>' +
+                '<li>- お名前</li>' +
+                '<li>- お名前（ふりがな）</li>' +
+                '<li>- メールアドレス</li>' +
+                '<li>- 電話番号</li>' +
+                '<li>- 店舗名</li>' +
+                '<li>- 店舗名（ふりがな）</li>' +
+                '<li>- 店舗住所</li>' +
+                '<li>- 店舗電話番号</li>' +
+                '<li>- ホームページのURL</li>' +
+                '<li>- 購入希望のワイン（国、種類、生産者、価格帯など）</li>' +
+            '</ul>' +
+        '</p>' +
+        '<h2>■ 発注・支払いに関して</h2>' +
+        '<p>' +
+            '<ol>' +
+                '<li>送料は配送にかかる実際の金額をご負担頂きます。送料に関する詳細は、お申し込み後にメールでお知らせいたします。</li>' +
+                '<li>発注は、１ケース単位でお願いします。</li>' +
+                '<li>ネット上の在庫がゼロ、もしくは在庫が購入希望本数よりも少ない場合はお問い合わせください。</li>' +
+                '<li>お支払い方法は銀行振り込みのみとなっておりますのでご了承ください。</li>' +
+            '</ol>' +
+        '</p>';
+ 
+    return html;
+}
+
+$(document).ready(function()
+{
+    var html         = '',
+        contentsHtml = generateContentsHtml();
+        
+    $('div.contents').html(contentsHtml);
+});
+
+</script>
+

@@ -1,0 +1,149 @@
+<?php
+
+function generatePassword($length = 14)
+{
+    $digits             = '01234567890';
+    $lowerCaseAlphabets = 'abcdefghijklmnopqrstuvwxyz';
+    $upperCaseAlphabets = strtoupper($lowerCaseAlphabets);
+    $symbols            = '!@#$%^&*()[]{}<>|_-=+;:,.?"\'';
+
+    $rgch = ($digits . $lowerCaseAlphabets . $upperCaseAlphabets . $symbols);
+
+    $rgPwdCh  = array();
+    $iLastCh  = strlen($rgch) - 1;
+    $tmpLengh = $length - 4;
+    for ($i = 0; $i < $tmpLengh; ++$i)
+    {
+        $iCh       = rand(0, $iLastCh);
+        $rgPwdCh[] = $rgch[$iCh];
+    }
+
+    $iDigits            = rand(0, strlen($digits) - 1);
+    $iLowerCaseAlphabet = rand(0, strlen($lowerCaseAlphabets) - 1);
+    $iUpperCaseAlphabet = rand(0, strlen($upperCaseAlphabets) - 1);
+    $iSymbol            = rand(0, strlen($symbols) - 1);
+
+    $rgPwdCh[] = $digits[$iDigits];
+    $rgPwdCh[] = $lowerCaseAlphabets[$iLowerCaseAlphabet];
+    $rgPwdCh[] = $upperCaseAlphabets[$iUpperCaseAlphabet];
+    $rgPwdCh[] = $symbols[$iSymbol];
+
+    return str_shuffle(implode($rgPwdCh));
+}
+
+require_once('../../../includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+$strPwd = generatePassword();
+
+echo '
+<span class="engFont" style="font-size:15px;">Registration</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+<form action="./register.php" method="POST" accept-charset="utf-8">
+    <table class="cartTable" style="width:100%">
+        <tr>
+            <td class="labelCol">
+                <label for="name">店舗名<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('name', 'text', '居酒屋おふろ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="name_phonetic">てんぽめい（ふりがな）<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('name_phonetic', 'text', 'いざかやおふろ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phone">電話番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('phone', 'text', '03-0000-0000', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="post_code">郵便番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('post_code', 'text', '156-0044', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">都道府県</td>
+            <td class="inputCol">';
+
+create_form_input('prefecture', 'select', ' ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="address">住所<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('address', 'text', '世田谷区赤堤４－１－１　○○ビル１０１号室', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="email">メールアドレス<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('email', 'text', '', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="comment">備考</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('comment', 'note', '', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="pwd">パスワード<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">
+                <input type="text" name="pwd" value="' . $strPwd . '" />
+            </td>
+        </tr>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="http://sei-ya.jp/admin_home.html" style="text-decoration:none;"><div style="padding:15px;display:inline-block;border:1px solid rgb(224,224,224);">Cancel</div></a>
+        <input id="registerBtn" type="submit" value="Register" style="width:100px;height:50px;border:1px solid rgb(224,224,224); background-color:white;color:rgb(80,80,80);font-size:12px;cursor:pointer;" />
+    </div>
+</form>';
+
+echo BOX_END;
+
+?>

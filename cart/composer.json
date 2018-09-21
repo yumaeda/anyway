@@ -1,0 +1,7 @@
+{
+    "require":{
+        "monolog/monolog": "^1.23",
+        "yumaeda/veritrans": "^1.0",
+        "yumaeda/shipping-fee": "^1.0"
+    }
+}

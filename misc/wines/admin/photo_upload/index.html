@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>Upload Wine Images</title>
+        <style>
+
+        *
+        {
+            padding: 0;
+            margin: 0;
+        }
+
+        body
+        {
+            width: 100%;
+        }
+
+        #wrapper-pane
+        {
+            text-align: center;
+            width: 995px;
+        }
+
+        #drop-pane
+        {
+            margin-top: 20px;
+            margin-left: 220px;
+            width: 550px;
+            height: 200px;
+            border: 2px dashed grey;
+        }
+
+        #status-pane
+        {
+            margin-left: 220px;
+            width: 550px;
+            height: 50px;
+        }
+
+        #message-pane
+        {
+            margin-left: 220px;
+            width: 550px;
+            height: 500px;
+
+            overflow: scroll;
+        }
+
+        .drop-text
+        {
+            margin-top: 70px;
+            color: grey;
+            font-size: 25px;
+        }
+
+        img.home-img
+        {
+            width: 50px;
+        }
+
+        </style>
+    </head>
+    <body>
+        <a href="http://sei-ya.jp/admin_home.html"><img class="home-img" src="//anyway-grapes.jp/images/adminHome.png" title="管理者ホームに戻る" /></a>
+        <div id="wrapper-pane">
+            <div id="drop-pane">
+                <h3 class="drop-text">Drag and Drop Images Here</h3>
+                <p>
+                ワインの画像(理想は20:27)をドラッグ＆ドロップしてください。
+                </p>
+            </div>
+            <div id="status-pane"></div>
+            <div id="message-pane"></div>
+            <div id="error-pane"></div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<script type="text/javascript">
+
+var cUploaded      = 0,
+    cTotal         = 0;
+
+$(document).ready(function()
+{
+    $('#drop-pane').on('dragenter', function(e)
+    {
+        e.preventDefault();
+        $(this).css('background', '#BBD5B8');
+    });
+
+    $('#drop-pane').on('dragover', function(e)
+    {
+        e.preventDefault();
+    });
+
+    $('#drop-pane').on('drop', function(e)
+    {
+        $(this).css('background', '#D8F9D3');
+        e.preventDefault();
+
+        var rgobjImage = e.originalEvent.dataTransfer.files;
+        createFormData(rgobjImage);
+    });
+});
+
+function createFormData(rgobjImage)
+{
+    cTotal    = rgobjImage.length;
+    cUploaded = 0;
+
+    var objImage = '';
+    for (var i = 0; i < cTotal; ++i)
+    {
+        objImage = rgobjImage[i];
+        $('#message-pane').append('<span id="' + objImage.name.split('.')[0] + '">Uploading ' + objImage.name + '...</span><br />');
+
+        var imgFormData = new FormData();
+
+        imgFormData.append('userFiles', objImage);
+        uploadFormData(imgFormData);
+    }
+}
+
+function uploadFormData(formData) 
+{
+    $.ajax(
+    {
+        url: './upload_image.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(strUploadedFileName)
+        {
+            ++cUploaded;
+            $('#status-pane').html(cUploaded + ' / ' + cTotal);
+            $('#message-pane span#' + strUploadedFileName.split('.')[0]).append(' Done!!');
+        },
+        error: function()
+        {
+            console.dir(formData);
+        }
+    });
+}
+
+</script>
+

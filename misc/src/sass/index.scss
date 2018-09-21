@@ -1,0 +1,158 @@
+$brown:   rgb(111, 95, 76);
+$engFont: (Helvetica, Arial, sans-serif);
+$jpnFont: ('KozGoPro-Light', '小塚ゴシック Pro L', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', '游ゴシック', 'YuGothic', 'メイリオ', 'Meiryo', 'sans-serif');
+$jpnFontSize: 13px;
+
+*
+{
+    padding: 0;
+    margin: 0;
+}
+
+html
+{
+    height: 100%;
+    font-family: $jpnFont;
+    font-size: $jpnFontSize;
+}
+
+body
+{
+    color: rgb(200, 200, 200);
+    background-color: black;
+}
+
+h2
+{
+    font-family: $engFont;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+ul
+{
+    margin-top: 110px;
+
+    li
+    {
+        display:inline-block;
+        padding: 0 15px 0 15px;
+
+        a
+        {
+            color: $brown;
+            font-family: $engFont;
+            font-size: 15px;
+
+            &:link, &:visited
+            {
+                text-decoration: none;
+            }
+
+            &:hover
+            {
+                color: white;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+img
+{
+    vertical-align: bottom;
+}
+
+a
+{
+    color: white;
+    text-decoration: none;
+
+    &:hover
+    {
+        text-decoration: underline;
+    }
+}
+
+.header-pane
+{
+    width: 100%;
+    height: 145px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    z-index: 5;
+    opacity: 0.8;
+
+    background:
+    {
+        color: black;
+        image: url("./images/logo.png");
+        repeat: no-repeat;
+        position: center top; 
+        size: 200px;
+    }
+}
+
+.footer-pane
+{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.navigation-pane
+{
+    color: $brown;
+    text-align: center;
+    padding: 40px;
+
+    a
+    {
+        color: $brown;
+        font-family: $engFont;
+        font-size: 14px;
+    }
+}
+
+div.contents
+{
+    width: 100%;
+    color: rgb(200, 200, 200);
+
+    background:
+    {
+        image: url("http://anyway-grapes.jp/images/bk_png8.png");
+        size: 100%;
+    }
+
+    div.mainContents
+    {
+        width: 750px;
+        padding: 200px 0 15px 0;
+        margin: 0 auto 0 auto;
+
+        h2
+        {
+            margin-bottom: 35px;
+        }
+
+        img
+        {
+            width: 600px;
+        }
+
+        .ad_block
+        {
+            color: $brown;
+            text-align: center;
+            padding: 40px;
+
+            img
+            {
+                opacity: 0.7;
+            }
+        }
+    }
+}
+

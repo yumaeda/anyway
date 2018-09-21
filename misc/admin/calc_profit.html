@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>定価</td>
+                <td>
+                    <input type="number" id="listPriceInput" /> yen
+                </td>
+            </tr>
+            <tr>
+                <td>掛け率</td>
+                <td>
+                    <select id="priceRateSelect">
+                        <option value="0.4">40%</option>
+                        <option value="0.45">45%</option>
+                        <option value="0.5">50%</option>
+                        <option value="0.55">55%</option>
+                        <option value="0.6">60%</option>
+                        <option value="0.65">65%</option>
+                        <option value="0.7" selected="selected">70%</option>
+                        <option value="0.75">75%</option>
+                        <option value="0.8">80%</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>割引率</td>
+                <td>
+                    <select id="discountRateSelect">
+                        <option value="0.0">0%</option>
+                        <option value="0.05">5%</option>
+                        <option value="0.1">10%</option>
+                        <option value="0.15">15%</option>
+                        <option value="0.2">20%</option>
+                        <option value="0.25">25%</option>
+                        <option value="0.3">30%</option>
+                        <option value="0.35">35%</option>
+                        <option value="0.4">40%</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>本数</td>
+                <td>
+                    <input type="number" id="qtyInput" /> bottles
+                </td>
+            </tr>
+            <tr>
+                <td>送り先</td>
+                <td>
+                    <select id="areaSelect">
+                        <option value="0">北海道</option>
+                        <option value="1">北東北</option>
+                        <option value="2">南東北</option>
+                        <option value="3" selected="selected">関東</option>
+                        <option value="4">信越</option>
+                        <option value="5">東海</option>
+                        <option value="6">北陸</option>
+                        <option value="7">関西</option>
+                        <option value="8">中国</option>
+                        <option value="9">四国</option>
+                        <option value="10">北九州</option>
+                        <option value="11">南九州</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>クール便</td>
+                <td>
+                    <select id="cooledPackSelect">
+                        <option value="0">利用しない</option>
+                        <option value="1" selected="selected">利用する</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="cooledPackFeeRow">
+                <td>クール便料金（税込）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr>
+                <td>クレジットカード</td>
+                <td>
+                    <select id="creditSelect">
+                        <option value="0.0325" selected="selected">Visa</option>
+                        <option value="0.0325">MasterCard</option>
+                        <option value="0.034">JCB</option>
+                        <option value="0.034">American Express</option>
+                        <option value="0.034">Diners Club</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="separatorRow">
+                <td colspan="2">
+                    <hr />
+                </td>
+            </tr>
+            <tr id="totalPriceRow">
+                <td>購入金額（税抜）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr id="purchasePriceRow">
+                <td>購入金額（税込）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr id="actualPriceRow">
+                <td>仕入れ値（税込）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr id="cardCommissionRow">
+                <td>カード手数料（税込）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr id="shippingFeeRow">
+                <td>送料（税込）</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+            <tr class="separatorRow">
+                <td colspan="2">
+                    <hr />
+                </td>
+            </tr>
+            <tr id="profitRow">
+                <td>利益</td>
+                <td>
+                    <span>?????</span> yen
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+var ProfitCalculator =
+{
+    m_shippingFeeTable:
+    [
+        { '60': 770, '80': 945, '100': 1120, '140': 1370 },
+        { '60': 560, '80': 735, '100': 910,  '140': 1085 },
+        { '60': 500, '80': 665, '100': 840,  '140': 1015 },
+        { '60': 490, '80': 665, '100': 840,  '140': 1015 },
+        { '60': 490, '80': 665, '100': 840,  '140': 1015 },
+        { '60': 500, '80': 665, '100': 840,  '140': 1015 },
+        { '60': 500, '80': 665, '100': 840,  '140': 1015 },
+        { '60': 560, '80': 735, '100': 910,  '140': 1085 },
+        { '60': 630, '80': 805, '100': 980,  '140': 1160 },
+        { '60': 700, '80': 875, '100': 1050, '140': 1225 },
+        { '60': 770, '80': 945, '100': 1120, '140': 1320 },
+        { '60': 770, '80': 945, '100': 1120, '140': 1360 }
+    ],
+
+    m_normalShippingFeeTable:
+    [
+        { '60': 1100, '80': 1350, '100': 1600, '140': 1850 },
+        { '60': 800,  '80': 1050, '100': 1300, '140': 1550 },
+        { '60': 700,  '80': 950,  '100': 1200, '140': 1450 },
+        { '60': 700,  '80': 950,  '100': 1200, '140': 1450 },
+        { '60': 700,  '80': 950,  '100': 1200, '140': 1450 },
+        { '60': 700,  '80': 950,  '100': 1200, '140': 1450 },
+        { '60': 700,  '80': 950,  '100': 1200, '140': 1450 },
+        { '60': 800,  '80': 1050, '100': 1300, '140': 1550 },
+        { '60': 900,  '80': 1150, '100': 1400, '140': 1650 },
+        { '60': 1000, '80': 1250, '100': 1500, '140': 1750 },
+        { '60': 1100, '80': 1350, '100': 1600, '140': 1850 },
+        { '60': 1100, '80': 1350, '100': 1600, '140': 1850 }
+    ],
+
+    m_cooledPackFeeTable:
+    [
+        { '60': 0,   '80': 0,   '100': 0,   '140': 0   },
+        { '60': 150, '80': 150, '100': 250, '140': 300 }
+    ],
+
+    m_commissionRate:       0.0,
+    m_priceRate:            0.0,
+    m_discountRate:         0.0,
+    m_listPrice:            0,
+    m_qty:                  0,
+    m_shippingArea:         0,
+    m_cooledPack:           0,
+    $m_actualPriceColValue: null,
+    $m_profitColValue:      null,
+
+    _calculateShippingFee: function(intArea, intQty, intCooled)
+    {
+        var curShippingFeeTable = ProfitCalculator.m_shippingFeeTable;
+
+        if (intCooled == 1)
+        {
+            curShippingFeeTable = ProfitCalculator.m_normalShippingFeeTable;
+        }
+
+        if ((intQty >= 1) && (intQty <= 2))
+        {
+            return curShippingFeeTable[intArea]['60'];
+        }
+        else if ((intQty >= 3) && (intQty <= 6))
+        {
+            return curShippingFeeTable[intArea]['80'];
+        }
+        else if ((intQty >= 7) && (intQty <= 12))
+        {
+            return curShippingFeeTable[intArea]['140'];
+        }
+        else if (intQty > 12)
+        {
+            return ProfitCalculator._calculateShippingFee(intArea, 12, intCooled) +
+                   ProfitCalculator._calculateShippingFee(intArea, intQty - 12, intCooled);
+        }
+
+        return 0;
+    },
+
+    _calculateCoolPrice: function(intQty, intCooled)
+    {
+        if ((intQty >= 1) && (intQty <= 2))
+        {
+            return ProfitCalculator.m_cooledPackFeeTable[intCooled]['60'];
+        }
+        else if ((intQty >= 3) && (intQty <= 6))
+        {
+            return ProfitCalculator.m_cooledPackFeeTable[intCooled]['80'];
+        }
+        else if ((intQty >= 7) && (intQty <= 12))
+        {
+            return ProfitCalculator.m_cooledPackFeeTable[intCooled]['140'];
+        }
+        else if (intQty > 12)
+        {
+            return ProfitCalculator._calculateCoolPrice(12, intCooled) +
+                   ProfitCalculator._calculateCoolPrice(intQty - 12, intCooled);
+        }
+
+        return 0;
+    },
+
+    _calculateActualPrice: function()
+    {
+        return Math.ceil(1.08 * ProfitCalculator.m_listPrice * ProfitCalculator.m_qty * ProfitCalculator.m_priceRate);
+    },
+
+    _calculate: function()
+    {
+        var total         = (ProfitCalculator.m_listPrice * ProfitCalculator.m_qty * (1 - ProfitCalculator.m_discountRate));
+            taxedTotal    = Math.ceil(total * 1.08),
+            profit        = (total - ProfitCalculator.$m_actualPriceColValue.html()),
+            commissionFee = Math.ceil(taxedTotal * ProfitCalculator.m_commissionRate),
+            shippingFee   = Math.ceil(1.08 * ProfitCalculator._calculateShippingFee(ProfitCalculator.m_shippingArea, ProfitCalculator.m_qty, ProfitCalculator.m_cooledPack)),
+            coolFee       = Math.ceil(1.08 * ProfitCalculator._calculateCoolPrice(ProfitCalculator.m_qty, ProfitCalculator.m_cooledPack));
+
+        $('tr#totalPriceRow span').html(total);
+        $('tr#purchasePriceRow span').html(taxedTotal);
+        $('tr#cardCommissionRow span').html(commissionFee);
+        $('tr#shippingFeeRow span').html(shippingFee);
+        $('tr#cooledPackFeeRow span').html(coolFee);
+
+        return (profit - commissionFee - shippingFee - coolFee);
+    },
+
+    onReady: function()
+    {
+        ProfitCalculator.m_shippingArea         = $('select#areaSelect').val();
+        ProfitCalculator.m_cooledPack           = $('select#cooledPackSelect').val();
+        ProfitCalculator.m_commissionRate       = $('select#creditSelect').val();
+        ProfitCalculator.m_priceRate            = $('select#priceRateSelect').val();
+        ProfitCalculator.$m_actualPriceColValue = $('tr#actualPriceRow span');
+        ProfitCalculator.$m_profitColValue      = $('tr#profitRow span');
+
+        $('table').on('focusout', 'input#listPriceInput', function()
+        {
+            ProfitCalculator.m_listPrice = $(this).val();
+
+            ProfitCalculator.$m_actualPriceColValue.html(ProfitCalculator._calculateActualPrice());
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('focusout', 'input#qtyInput', function()
+        {
+            ProfitCalculator.m_qty = $(this).val();
+
+            ProfitCalculator.$m_actualPriceColValue.html(ProfitCalculator._calculateActualPrice());
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('change', 'select#priceRateSelect', function()
+        {
+            ProfitCalculator.m_priceRate = $(this).val();
+
+            ProfitCalculator.$m_actualPriceColValue.html(ProfitCalculator._calculateActualPrice());
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('change', 'select#discountRateSelect', function()
+        {
+            ProfitCalculator.m_discountRate = $(this).val();
+
+            ProfitCalculator.$m_actualPriceColValue.html(ProfitCalculator._calculateActualPrice());
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('change', 'select#areaSelect', function()
+        {
+            ProfitCalculator.m_shippingArea = $(this).val();
+
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('change', 'select#cooledPackSelect', function()
+        {
+            ProfitCalculator.m_cooledPack = $(this).val();
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+
+        $('table').on('change', 'select#creditSelect', function()
+        {
+            ProfitCalculator.m_commissionRate = $(this).val();
+
+            ProfitCalculator.$m_profitColValue.html(ProfitCalculator._calculate());
+        });
+    }
+};
+
+$(document).ready(ProfitCalculator.onReady);
+
+</script>
+
