@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <style type="text/css">
+
+        body
+        {
+            font-size: 12px;
+        }
+
+        a img
+        {
+            width: 50px;
+        }
+
+        div#outputPane
+        {
+            margin-top: 15px;
+        }
+
+        td:first-child
+        {
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+        </style>
+    </head>
+    <body>
+        <a href="http://sei-ya.jp/admin_home.html"><img src="http://sei-ya.jp/ofuro/images/adminHome.png" /></a>                                                                  
+        <br />                                                                                                             
+        <div id="inputPane">
+            <input type="text" maxlength="4" placeholder="code" />
+            <a href="#" id="showWineLnk">ワインを表示</a>
+        </div>
+        <div id="outputPane">
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+function renderWine(objWine)
+{
+    var strGlassPrice = (objWine.glass_price > 0) ? ('￥' + objWine.glass_price) : '価格が設定されていません。',
+        html          =
+            '<h3>' + objWine.vintage + ' ' + objWine.combined_name + '</h2>' +
+            '<table>' +
+                '<tr>' +
+                    '<td>生産者:</td>' +
+                    '<td>' + objWine.producer + ' (' + objWine.producer_jpn + ')</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>国:</td>' +
+                    '<td>' + objWine.country + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>地方:</td>' +
+                    '<td>' + objWine.region + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>品種:</td>' +
+                    '<td>' + objWine.cepage + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>グラス価格:</td>' +
+                    '<td>' + strGlassPrice + '（税別）</td>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>ボトル価格:</td>' +
+                    '<td>￥' + objWine.restaurant_price + '（税別）</td>' +
+                '</tr>';
+
+    if (objWine.stock <= 0)
+    {
+        html +=
+            '<tr>' +
+                '<td colspan="2" style="color:red;">在庫がありません。</td>' +
+            '</tr>';
+    }
+
+    $('div#outputPane').html('</table>' + html);
+}
+
+$(document).ready(function()
+{
+    $('body').on('click', 'a#showWineLnk', function()
+    {
+        var barcodeNumber = $(this).siblings('input').val();
+
+        $.ajax(
+        {
+            url: '//anyway-grapes.jp/laravel5.3/public/api/v1/wines/' + barcodeNumber,
+            dataType: 'json',
+            success: function(data)
+            {
+                var rgobjWine = data.wines;
+                if (rgobjWine.length === 1)
+                {
+                    renderWine(rgobjWine[0]);
+                }
+                else
+                {
+                    alert('指定されたコードが見つかりません。');
+                }
+            },
+
+            error: function() {}
+        });
+
+        return false;
+    });
+});
+
+</script>
+
