@@ -1,0 +1,19 @@
+<?php
+
+$returnUrl = isset($_REQUEST['returnUrl']) ? $_REQUEST['returnUrl'] : 'http://anyway-grapes.jp';
+
+echo BOX_BEGIN;
+
+echo '
+    <span class="engFont" style="font-size:15px;">Happy Box</span>
+    &nbsp;/&nbsp;
+    <span style="font-size:10px;">自分で作る福箱</span>
+    <hr class="lineThin" />
+    <p>お客様の福箱は空です。</p>
+    <br />
+    <a href="' . $returnUrl . '"><img src="cart_images/continue_shopping.png" /></a>
+    <br /><br /><br />';
+
+echo BOX_END;
+
+?>

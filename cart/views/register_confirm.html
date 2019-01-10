@@ -1,0 +1,40 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Confirmation</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+<form action="./register_confirm.php" method="POST" accept-charset="utf-8">
+    <table class="cartTable" style="width:100%">
+        <tr>
+            <td class="labelCol">お名前</td>
+            <td class="valueCol">' . "$lastName $firstName" . '</td>
+        </tr>
+        <tr>
+            <td class="labelCol">お名前（ふりがな）</td>
+            <td class="valueCol">' . "$lastNamePhonetic $firstNamePhonetic" . '</td>
+        </tr>
+        <tr>
+            <td class="labelCol">電話番号</td>
+            <td class="valueCol">' . $phone . '</td>
+        </tr>
+        <tr>
+            <td class="labelCol">住所</td>
+            <td class="valueCol">' . $fullAddress . '</td>
+        </tr>
+        <tr>
+            <td class="labelCol">メールアドレス</td>
+            <td class="valueCol">' . $email . '</td>
+        </tr>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="https://anyway-grapes.jp/register.php"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+echo BOX_END;
+
+?>

@@ -1466,8 +1466,8 @@ $('div#mainPage').on('pagecreate', function(event)
             taxedMaxPrice = 999999;
         }
 
-        var minPrice     = Math.floor(taxedMinPrice / taxRate),
-            maxPrice     = Math.floor(taxedMaxPrice / taxRate),
+        var minPrice     = Math.floor(taxedMinPrice / (1 + taxRate)),
+            maxPrice     = Math.floor(taxedMaxPrice / (1 + taxRate)),
             strCondition = '(price >= ' + minPrice + ') AND (price <= ' + maxPrice + ')';
 
         renderSearchResult(title, strCondition, 'price', 'type');

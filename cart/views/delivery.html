@@ -1,0 +1,304 @@
+<?php
+
+echo '
+<div class="progressPane" align="center">
+    <span>お客様情報</span>
+    <span>&gt;&gt;</span>
+    <span class="currentProgress">配送情報</span>
+    <span class="currentProgress">&gt;&gt;</span>
+    <span>注文内容の確認</span>
+    <span>&gt;&gt;</span>
+    <span>決済方法の選択</span>
+    <span>&gt;&gt;</span>
+    <span>終了</span>
+</div>
+<br style="clear:all;"/>
+';
+
+if ($intCartType == 0)
+{
+    include('./views/checkout_cart.html');
+}
+else if ($intCartType == 1)
+{
+    include('./views/checkout_happy_box.html');
+}
+else if ($intCartType == 2)
+{
+    include('./views/checkout_preorder_cart.html');
+}
+
+include('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+$returnUrl   = isset($_REQUEST['returnUrl']) ? $_REQUEST['returnUrl'] : '';
+$postUri     = '/delivery.php?returnUrl=' . urlencode($returnUrl);
+$prevPageUri = 'https://' . BASE_URL . 'checkout.php?returnUrl=' . urlencode($returnUrl);
+
+if ($intCartType > 0)
+{
+    $postUri     .= '&cart_type=' . $intCartType;
+    $prevPageUri .= '&cart_type=' . $intCartType;
+}
+
+echo '
+<form action="' . $postUri . '" method="POST">
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">
+                配送先<br>
+                <a href="http://anyway-grapes.jp/blog/%E5%90%8C%E6%A2%B1%E3%81%AB%E9%96%A2%E3%81%97%E3%81%A6/" target="_blank">[同梱に関して]</a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_option">受取り方法</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_option', 'select', ' ', $inputErrors, $inputSrc);
+
+    echo '
+                <br />
+                <span style="color:red">※「店頭引き取り」を選択頂いた場合は1週間以内に商品を受け取りにお越しください。</span>
+                <br />
+                <span style="color:red">※「店頭引き取り」を選択頂いた場合のお支払い方法はクレジットカードのみとなっておりますのでご了承ください。</span>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable delivery-info-table" style="width:100%;display:none;">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">配送先の情報（「ご自宅以外に配送」を選択された場合にのみご記入下さい。）</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="name">お名前<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_full_name_input($inputErrors, $inputSrc, TRUE);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phonetic">ふりがな<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_full_phonetic_input($inputErrors, $inputSrc, TRUE);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_post_code">
+                    郵便番号<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_post_code', 'text', '156-0044', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_prefecture">
+                    都道府県
+                </label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_prefecture', 'select', ' ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_address">
+                    住所<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="addressCol">';
+
+create_form_input('delivery_address', 'text', '世田谷区赤堤４－１－１　○○ビル１０１号室', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_phone">
+                    電話番号<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_phone', 'text', '03-0000-0000', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable delivery-datetime-table" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">
+                配送日時＆配送方法（一部の地域で配送の遅延が発生する場合がございます。）<br />
+                <a href="http://www.kuronekoyamato.co.jp/chien/chien_hp.html" target="_blank">[ヤマト運輸]</a>
+                &nbsp;
+                <a href="http://www2.sagawa-exp.co.jp/information/list" target="_blank">[佐川急便]</a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="delivery_company">配送業者</label>
+            </td>
+            <td class="inputCol">';
+
+if (($cWineSet > 0) || ($cFortuneBox > 0))
+{
+    echo '
+                <select name="delivery_company">
+                    <option value="ヤマト運輸" selected="selected">ヤマト運輸</option>
+                </select>
+                <br />
+                <span style="color:red">
+                    ワインセットをご購入の場合はヤマト運輸での配送となりますのでご了承ください。<br /><br />
+                    a) 通常便の場合、1セットのご購入につき合計12本までの送料が無料になります。<br />
+                    b) クール便の場合、1セットのご購入につき合計9本までの送料が無料になります。
+                </span>';
+}
+else
+{
+    create_form_input('delivery_company', 'select', ' ', $inputErrors, $inputSrc);
+
+    echo '
+                <br />
+                <span style="color:red">※ヤマト運輸のクール便は1箱9本までとなっております。ご注文本数が10本以上の場合、2箱分の送料とクール料金がかかりますのでご了承ください。</span>
+    ';
+}
+
+echo '
+            </td>
+        </tr>
+        </tr>
+            <td class="labelCol">
+                <label for="delivery_date">配送希望日</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_date', 'select', ' ', $inputErrors, $inputSrc);
+
+echo '
+                <br />
+                <span style="color:red">※当日発送をご希望の場合は、下記の備考欄にその旨をご記入ください（集荷時間前までにご入金を確認できる場合に限ります）。</span>
+                <br /><br />
+                <span style="color:red">※当店の定休日が火曜日となっているため、水曜日着のお荷物は月曜日に発送いたしております。</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="deliveryTime">配送希望時間帯</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('delivery_time', 'select', ' ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="coolDelivery">クール便を利用する</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('refrigerated', 'bool', ' ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="comment">備考</label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('comment', 'note', "例）ワインを宅配ボックスには入れないで下さい。領収書を発行して下さい。", $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="' . $prevPageUri . '"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+?>
+
+<?php echo BOX_END; ?>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function adjustSelectionLists(strSelected)
+{
+    var $deliveryInfo     = $('table.delivery-info-table'),
+        $deliveryDateTime = $('table.delivery-datetime-table');
+
+    if (strSelected == '店頭引き取り')
+    {
+        $deliveryInfo.fadeOut(500);
+        $deliveryDateTime.fadeOut(500);
+    }
+    else if (strSelected == 'ご自宅に配送')
+    {
+        $deliveryInfo.fadeOut(500);
+        $deliveryDateTime.fadeIn(500);
+    }
+    else
+    {
+        $deliveryInfo.fadeIn(500);
+        $deliveryDateTime.fadeIn(500);
+    }
+}
+
+$(document).ready(function()
+{
+    adjustSelectionLists($('select#delivery_option').val());
+
+    $('div.contents').on('change', 'select#delivery_option', function()
+    {
+        adjustSelectionLists($(this).val());
+    });
+});
+
+</script>
+

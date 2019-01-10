@@ -1,0 +1,62 @@
+<?php
+
+if (!isset($loginErrors))
+{
+    $loginErrors = array();
+}
+
+require_once('./includes/config.inc.php');
+require_once('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Login</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+<form action="./login.php?return_url='. $returnUrl . '" method="POST">';
+
+if (array_key_exists('login', $loginErrors))
+{
+    echo '<div style="color:red;">' . $loginErrors['login'] . '</div>';
+}
+
+echo '
+    <table class="cartTable" style="width:100%">
+        <tr>
+            <td class="labelCol">Eメール</td>
+            <td class="inputCol">';
+
+create_form_input('email', 'text', '', $loginErrors, 'POST');
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">パスワード</td>
+            <td class="inputCol">';
+
+create_form_input('pwd', 'password', '', $loginErrors, 'POST');
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:left;">
+                ※会員登録がお済みでない方は、<a href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=member_rules">新規ご登録</a>をお願いします。
+            </td>
+        </tr>
+    </table>
+    <br />
+    <p>
+        パスワードを忘れてしまった方は、<a href="https://anyway-grapes.jp/forgot_password.php">パスワードのリセット</a>をお願いします。
+    </p>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="' . $returnUrl . '"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+echo BOX_END;
+
+?>

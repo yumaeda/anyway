@@ -1,0 +1,19 @@
+<?php
+
+$returnUrl = empty($_REQUEST['returnUrl']) ? './store/index.php' : $_REQUEST['returnUrl'];
+
+echo BOX_BEGIN;
+
+echo '
+    <span class="engFont" style="font-size:15px;">Shopping Cart</span>
+    &nbsp;/&nbsp;
+    <span style="font-size:10px;">ショッピングカート</span>
+    <hr class="lineThin" />
+    <p>お客様の買い物カゴは空です。</p>
+    <br />
+    <a href="' . $returnUrl . '"><img src="cart_images/continue_shopping.png" /></a>
+    <br /><br /><br />';
+
+echo BOX_END;
+
+?>

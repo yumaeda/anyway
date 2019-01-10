@@ -2,8 +2,8 @@
 // Constants
 define('TARGET_DATE', '2019-10-01 00:00:00');
 define('TIME_ZONE', 'Asia/Tokyo');
-define('CURRENT_TAX_RATE', 1.08);
-define('NEW_TAX_RATE', 1.1);
+define('CURRENT_TAX_RATE', 0.08);
+define('NEW_TAX_RATE', 0.1);
 
 return [
     'tax' => [

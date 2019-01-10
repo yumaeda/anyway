@@ -1,0 +1,203 @@
+<?php
+
+echo '
+<div class="progressPane" align="center">
+    <span class="currentProgress">お客様情報</span>
+    <span class="currentProgress">&gt;&gt;</span>
+    <span>配送情報</span>
+    <span>&gt;&gt;</span>
+    <span>決済方法の選択</span>
+    <span>&gt;&gt;</span>
+    <span>注文内容の確認</span>
+    <span>&gt;&gt;</span>
+    <span>終了</span>
+</div>
+<br style="clear:all;"/>
+';
+
+if ($intCartType == 0)
+{
+    include('./views/checkout_cart.html');
+}
+else if ($intCartType == 1)
+{
+    include('./views/checkout_happy_box.html');
+}
+else if ($intCartType == 2)
+{
+    include('./views/checkout_preorder_cart.html');
+}
+
+include('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+$returnUrl   = isset($_REQUEST['returnUrl']) ? $_REQUEST['returnUrl'] : '';
+$postUri     = '/checkout.php?returnUrl=' . urlencode($returnUrl);
+$prevPageUri = 'https://' . BASE_URL . 'cart.php?returnUrl=' . urlencode($returnUrl);
+
+if ($intCartType > 0)
+{
+    $postUri     .= '&cart_type=' . $intCartType;
+    $prevPageUri .= '&cart_type=' . $intCartType;
+}
+
+?>
+
+<form action="<?php echo $postUri; ?>" method="POST">
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">年齢の確認（20歳未満の方には酒類を販売しておりません。）</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="date_of_birth">生年月日<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">
+                <?php create_date_of_birth_input($inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">ご注文者の情報</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="name">お名前<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">
+                <?php create_full_name_input($inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phonetic">ふりがな<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">
+                <?php create_full_phonetic_input($inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label>
+                    郵便番号<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('post_code', 'text', '156-0044', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="prefecture">
+                    都道府県
+                </label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('prefecture', 'select', ' ', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="address">
+                    住所<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="addressCol">
+                <?php create_form_input('address', 'text', '世田谷区赤堤４－１－１　○○ビル１０１号室', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phone">
+                    電話番号<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('phone', 'text', '03-0000-0000', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="email">
+                    メールアドレス<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('email', 'text', '', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label>
+                    メールアドレス（確認用）<span class="requiredCol">*</span>
+                </label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('email_confirm', 'text', '', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">その他</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="labelCol">
+                <label for="mailMagazine">メールマガジンを購読する</label>
+            </td>
+            <td class="inputCol">
+                <?php create_form_input('mail_magazine', 'bool', ' ', $inputErrors, $inputSrc); ?>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="<?php echo $prevPageUri; ?>"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>
+
+<?php echo BOX_END; ?>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+    $('input#post_code').jpostal({
+	postcode:
+	[
+	    '#post_code'//,
+	    //'#post_code_2'
+	],
+	address:
+	{
+	    '#prefecture': '%3',
+	    '#address': '%4%5'
+	}
+    });
+});
+
+</script>
+

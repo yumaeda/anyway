@@ -1,0 +1,108 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+<p>お客様の買い物カゴには、以下の商品が入っています。</p>
+<br />
+<table class="cartTable">
+    <thead>
+        <tr>
+            <td>写真</td>
+            <td>商品名</td>
+            <td>数量</td>
+            <td>単価</td>
+            <td>金額</td>
+        </tr>
+    </thead>
+    <tbody>
+';
+
+require_once('./common.php');
+
+// Get tax rate from config file.
+$config = include('./config.php');
+$taxRate = $config['tax']['rate']();
+
+$wineTotal = 0;
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+{
+    $price = getPrice($row);
+
+    $barcodeNumber  = $row['barcode_number'];
+    $quantity       = $row['quantity'];
+    $intSubtotal    = $price * $quantity;
+    $subtotal       = number_format($intSubtotal);
+    $producerName   = $row['producer'] ? ('[' . $row['producer'] . ']') : '';
+    $name           = $row['vintage'] . ' ' . $row['name'] . '<br />' . $producerName;
+    $stock          = $row['stock'];
+    $priceHtml      = generatePriceHtml($row);
+
+    $imgHtml = ($barcodeNumber > 50000) ?
+        "<img src=\"https://anyway-grapes.jp/images/wine_sets/" . ($barcodeNumber - 50000) . ".png\" onerror=\"this.src='./images/wine_sets/no_wine_set_image.png';\" />" :
+        "<img src=\"//anyway-grapes.jp/images/wines/100px/$barcodeNumber.png\" onerror=\"this.src='//anyway-grapes.jp/images/wines/100px/no_wine_photo.jpg';\" />";
+
+    echo "
+    <tr>
+        <td class=\"imgCol\">
+            $imgHtml
+        </td>
+        <td>$name</td>
+        <td>$quantity</td>
+        <td class=\"priceCol engFont\">$priceHtml</td>
+        <td class=\"priceCol engFont\">$subtotal yen</td>
+    </tr>
+";
+
+    $wineTotal += $intSubtotal;
+}
+
+$shippingFee    = isset($_SESSION['shipping_fee']) ? $_SESSION['shipping_fee'] : 0;
+$coolFee        = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
+$strShippingFee = number_format($shippingFee) . ' yen';
+$strCoolFee     = number_format($coolFee) . ' yen';
+$tax            = floor(($wineTotal + $shippingFee + $coolFee) * $taxRate);
+$strTax         = number_format($tax) . ' yen';
+$strWineTotal   = number_format($wineTotal) . ' yen';
+$grandTotal     = ($wineTotal + $shippingFee + $coolFee + $tax);
+$strGrandTotal  = number_format($grandTotal) . ' yen';
+
+$_SESSION['grand_total'] = $grandTotal;
+
+echo "
+        <tr>
+            <td colspan=\"3\">
+                <span class=\"engFont\">$strWineTotal</span> (小計)
+";
+
+if ($strShippingFee > 0)
+{
+    echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strShippingFee</span> (配送料)
+";
+}
+
+if ($strCoolFee > 0)
+{
+    echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strCoolFee</span> (クール便)
+";
+}
+
+echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strTax</span> (消費税)
+            </td>
+            <td colspan=\"2\">
+                <strong>
+                    総額:&nbsp;&nbsp;<span class=\"engFont\">$strGrandTotal</span>
+                </strong>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+";
+              
+echo BOX_END;

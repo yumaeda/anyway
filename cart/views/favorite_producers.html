@@ -1,0 +1,36 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Favorite Producers</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+';
+
+if ($bodyHtml !== '')
+{
+    echo '
+<p>
+    以下の生産者がお客様のお気に入りリストに登録されています。<br />
+    登録されている生産者のワインが入荷した際にはメールでお知らせいたします。<br /><br />
+</p>' . $bodyHtml;
+}
+else
+{
+    echo '
+<p>
+    お気に入りの生産者が登録されていません。<br />
+    <a href="./producers/index.html">生産者ホーム</a>&nbsp;から生産者を検索し、お気に入りに追加してください。
+</p>';
+}
+
+echo '
+<br style="clear:all;" />
+    <div align="center">
+        <a href="https://anyway-grapes.jp/customer_info.php"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+    </div>
+';
+
+echo BOX_END;
+
+?>

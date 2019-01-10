@@ -1,0 +1,36 @@
+<?php
+
+echo '
+<div class="progressPane" align="center">
+    <span>お客様情報</span>
+    <span>&gt;&gt;</span>
+    <span>配送情報</span>
+    <span>&gt;&gt;</span>
+    <span>決済方法の選択</span>
+    <span>&gt;&gt;</span>
+    <span>注文内容の確認</span>
+    <span>&gt;&gt;</span>
+    <span class="currentProgress">終了</span>
+</div>
+<br style="clear:all;"/>
+';
+
+echo BOX_BEGIN;
+
+echo "
+<p>
+    ご注文ありがとうございました。<br />
+    <br />
+    お客様のオーダー番号は、[ $orderId ]となります。<br />
+    お客様宛に、「ご注文の確認」メールが送信されましたのでご確認下さい。<br />
+    「ご注文の確認」メールが届かない場合、注文に関するお問い合わせの際には、係りの者にオーダーＩＤをお伝え下さい。<br />
+    <br />
+    お客様の注文は、通常３日以内に処理されます。遅延が発生する場合には、前もってメールでお知らせいたします。
+</p>
+<br /><br />
+<a href=\"http://anyway-grapes.jp\">トップページに戻る</a>
+";
+
+echo BOX_END;
+
+?>

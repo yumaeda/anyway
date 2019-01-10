@@ -1,0 +1,186 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+    <span class="engFont" style="font-size:15px;">Happy Box</span>&nbsp;/&nbsp;<span style="font-size:10px;">自分で選ぶ福箱</span>
+    <hr class="lineThin" />
+    <p>
+        ご購入の数量を入力した後、[更新] ボタンをクリックすると、商品の合計が再計算されます。<br />
+        また、<u>削除</u>リンクをクリックして商品を福箱から削除する事もできます。
+    </p>
+    <br />';
+
+$returnUrl = isset($_REQUEST['returnUrl']) ?  $_REQUEST['returnUrl'] : './store/index.php';
+
+echo '
+<form action="./cart.php?cart_type=1&returnUrl=' . urlencode($returnUrl) . '" method="POST">
+    <table class="cartTable">
+        <thead>
+            <tr>
+                <td>写真</td>
+                <td>商品名</td>
+                <td>数量</td>
+                <td>単価</td>
+                <td>金額</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+';
+
+$enableCheckout    = TRUE;
+$total             = 0;
+$totalQty          = 0;
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+{
+    $price          = $row['price'];
+    $formattedPrice = number_format($price);
+    $quantity       = $row['quantity'];
+    $intSubtotal    = $price * $quantity;
+    $subtotal       = number_format($intSubtotal);
+    $producerName   = $row['producer'] ? ('[' . $row['producer'] . ']') : '';
+    $itemName       = $row['vintage'] . ' ' . $row['name'] . '<br />' . $producerName;
+    $barcodeNumber  = $row['barcode_number'];
+
+    $imgHtml      = "<img src=\"https://googledrive.com/host/0B3yZy0OLm8Z6fkZ6ZS1nbW1kdEo3WC1pQVBIdThsb19jamRBbHBlejlFR2NxZ1BfWGRvUGs/$barcodeNumber.png\" onerror=\"this.src='https://googledrive.com/host/0B3yZy0OLm8Z6fkZ6ZS1nbW1kdEo3WC1pQVBIdThsb19jamRBbHBlejlFR2NxZ1BfWGRvUGs/no_wine_photo.jpg';\" />";
+    $itemLinkHtml = "<a href=\"./wines/winedetail.php?id=$barcodeNumber\">$itemName</a>";
+
+    if (($barcodeNumber >= 1000) && ($barcodeNumber <= 50000))
+    {
+        $totalQty += $quantity;
+    }
+
+    echo "
+                  <tr>
+                      <td class=\"imgCol\">
+                          $imgHtml
+                      </td>
+                      <td class=\"nameCol\">
+                          $itemLinkHtml
+                      </td>
+                      <td>
+                          <input type=\"text\"   id=\"qtyFld\"    name=\"quantity[$barcodeNumber]\" value=\"$quantity\" size=\"2\" /><br />
+                          <input type=\"submit\" id=\"updateBtn\" value=\"更新\" />
+                      </td>
+                      <td class=\"priceCol engFont\">$formattedPrice yen</td>
+                      <td class=\"priceCol engFont\">$subtotal yen</td>
+                      <td class=\"operationCol\">
+                          <a id=\"$barcodeNumber\" class=\"removeWineLnk\" href=\"#\">削除</a>
+                      </td>
+                  </tr>";
+
+    $stock = $row['stock'] ? $row['stock'] : 0;
+    if ($stock == 0)
+    {
+        echo "
+                  <tr>
+                      <td colspan=\"6\" class=\"errorCol\">
+                          他のお客様が先に購入手続きをされたため、在庫が0個になりました。<br />
+                          大変申し訳ございませんが、\"削除\"リンクをクリックしてカートから削除して下さい。
+                      </td>
+                  </tr>";
+
+        $enableCheckout = FALSE;
+    }
+    else if ($stock < $quantity)
+    {
+        echo "
+                   <tr>
+                       <td colspan=\"6\" class=\"errorCol\">
+                           「 $itemName 」の在庫が残り　$stock 個のため、ご希望の本数を購入頂く事ができません。お手数ですが、数量を変更後[更新]ボタンをクリックして下さい。
+                       </td>
+                   </tr>";
+
+        $enableCheckout = FALSE;
+    }
+
+    $total += $intSubtotal;
+}
+
+$messageTrHtml  = '';
+$formattedTotal = number_format($total) . ' yen';
+
+if (($totalQty != 6) && ($totalQty != 12))
+{
+    $enableCheckout = FALSE;
+
+    $totalPriceText =
+        "合計&nbsp;$totalQty&nbsp;本&nbsp;&nbsp;:&nbsp;&nbsp;" . '
+        <span style="font-weight:bold;font-size:16px;">' . $formattedTotal . '</span>（税抜）';
+
+    $messageTrHtml =
+        '<tr>
+            <td colspan="6" style="color:red;font-size:14px;">
+                ！！福箱のご注文は6本または12本となっております。！！
+            </td>
+         </tr>';
+}
+else
+{
+    $discountText = '';
+    $discountRate = 0.0;
+    if ($totalQty == 6)
+    {
+        $discountRate = 0.1;
+        $discountText = '合計金額から10%割引いたします。あと<span style="font-size:16px;">6</span>本お買い上げ頂くと合計金額から20%割引いたします。';
+    }
+    else if ($totalQty == 12)
+    {
+        $discountRate = 0.2;
+        $discountText = '12本のお買い上げとなりますので、合計金額から20%割引いたします。';
+    }
+
+    $discountedTotal = round($total * (1 - $discountRate));
+
+    $totalPriceText  =
+        "合計&nbsp;$totalQty&nbsp;本&nbsp;&nbsp;:&nbsp;&nbsp;" . '
+        <span class="engFont" style="text-decoration:line-through;">' . $formattedTotal . '</span>
+        &nbsp;&nbsp;→&nbsp;&nbsp;
+        <span style="font-weight:bold;font-size:16px;color:darkred;">' . number_format($discountedTotal) . '&nbsp;yen</span>（税抜）';
+
+    $messageTrHtml = "
+          <tr>
+              <td colspan=\"6\" style=\"color:green;\">
+                  $discountText
+              </td>
+          </tr>";
+}
+
+echo "
+      </tbody>
+      <tfoot>
+          <tr>
+              <td colspan=\"6\" style=\"font-size:14px;\">
+                  $totalPriceText
+              </td>
+          </tr>
+          $messageTrHtml
+          <tr>
+              <td colspan=\"6\">
+                  <img src=\"cart_images/happy_box.png\" />
+              </td>
+          </tr>
+      </tfoot>
+  </table>
+</form>
+<br /><br />
+<p style=\"text-align:center;font-size:14px;\">";
+
+echo "<a href=\"$returnUrl\"><img src=\"cart_images/continue_shopping.png\" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+if ($enableCheckout)
+{
+    echo '<a href="https://' . BASE_URL . 'checkout.php?cart_type=1&returnUrl=' . urlencode($returnUrl) . '"><img src="cart_images/checkout.png" /></a>';
+}
+else
+{
+    echo '<img src="cart_images/checkout_disabled.png" />';
+}
+
+echo '
+</p>';
+
+echo BOX_END;
+
+?>

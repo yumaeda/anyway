@@ -1,0 +1,28 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Purchase History</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+';
+
+if ($bodyHtml !== '')
+{
+    echo $bodyHtml;
+}
+else
+{
+    echo '購入履歴が見つかりません。';
+}
+
+echo '
+<br style="clear:all;" />
+    <div align="center">
+        <a href="https://anyway-grapes.jp/customer_info.php"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+    </div>
+';
+
+echo BOX_END;
+
+?>

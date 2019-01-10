@@ -1,0 +1,95 @@
+<?php
+
+require_once('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Member Info</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+<form action="./customer_info.php" method="POST" accept-charset="utf-8">
+    <table class="cartTable" style="width:100%">
+        <tr>
+            <td class="labelCol">
+                <label for="last_name">氏名</label>
+            </td>
+            <td class="inputCol">';
+
+echo $_SESSION['last_name'] . ' ' . $_SESSION['first_name'];
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="last_name_phonetic">氏名（ふりがな）</label>
+            </td>
+            <td class="inputCol">';
+
+echo $_SESSION['last_name_phonetic'] . ' ' . $_SESSION['first_name_phonetic'];
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phone">電話番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('phone', 'text', '', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="post_code">郵便番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('post_code', 'text', '', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">都道府県</td>
+            <td class="inputCol">';
+
+create_form_input('prefecture', 'select', ' ', $inputErrors, $inputSrc);
+
+$inputStyle = array(
+    'style' => 'width:95%;'
+);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="address">住所<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('address', 'text', '', $inputErrors, $inputSrc, $inputStyle);
+
+echo '
+            </td>
+        </tr>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=member_rules"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/update_btn.png" value="" />
+        <br /><br />
+        <a href="https://anyway-grapes.jp/favorite_producers.php">お気に入りの生産者</a>
+        <br /><br />
+        <a href="https://anyway-grapes.jp/purchased_items.php">購入履歴</a>
+    </div>
+</form>
+';
+
+echo BOX_END;
+
+?>

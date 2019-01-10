@@ -1,0 +1,122 @@
+<?php
+
+echo BOX_BEGIN;
+
+echo '
+<p>お客様の福箱には、以下の商品が入っています。</p>
+<br />
+<table class="cartTable">
+    <thead>
+        <tr>
+            <td>写真</td>
+            <td>商品名</td>
+            <td>数量</td>
+            <td>単価</td>
+            <td>金額</td>
+        </tr>
+    </thead>
+    <tbody>
+';
+
+$wineTotal = 0;
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+{
+    $barcodeNumber  = $row['barcode_number'];
+    $price          = $row['price'];
+    $formattedPrice = number_format($price);
+    $quantity       = $row['quantity'];
+    $subtotal       = number_format($price * $quantity);
+    $producerName   = $row['producer'] ? ('[' . $row['producer'] . ']') : '';
+    $name           = $row['vintage'] . ' ' . $row['name'] . '<br />' . $producerName;
+    $stock          = $row['stock'];
+
+    $imgHtml =
+        "<img src=\"https://googledrive.com/host/0B3yZy0OLm8Z6fkZ6ZS1nbW1kdEo3WC1pQVBIdThsb19jamRBbHBlejlFR2NxZ1BfWGRvUGs/$barcodeNumber.png\" onerror=\"this.src='https://googledrive.com/host/0B3yZy0OLm8Z6fkZ6ZS1nbW1kdEo3WC1pQVBIdThsb19jamRBbHBlejlFR2NxZ1BfWGRvUGs/no_wine_photo.jpg';\" />";
+
+    echo "
+    <tr>
+        <td class=\"imgCol\">$imgHtml</td>
+        <td>$name</td>
+        <td>$quantity</td>
+        <td class=\"priceCol engFont\">$formattedPrice yen</td>
+        <td class=\"priceCol engFont\">$subtotal yen</td>
+    </tr>
+";
+}
+
+prepareNextQuery($dbc);
+
+$tmpResult = mysqli_query($dbc, "CALL get_lucky_bag_item_total('$userId')");
+if ($result !== FALSE)
+{
+    list($wineOriginalTotal, $wineTotal) = mysqli_fetch_array($tmpResult);
+    mysqli_free_result($tmpResult);
+
+    if ($wineOriginalTotal > $wineTotal)
+    {
+        $formattedDiscountPrice = number_format(-1 * ($wineOriginalTotal - $wineTotal));
+
+        echo "
+        <tr>
+            <td class=\"imgCol\">&nbsp;</td>
+            <td>福箱割引</td>
+            <td>1</td>
+            <td colspan=\"2\" class=\"priceCol engFont\" style=\"color:darkred;\">$formattedDiscountPrice yen</td>
+        </tr>";
+    }
+}
+
+$shippingFee    = isset($_SESSION['shipping_fee']) ? $_SESSION['shipping_fee'] : 0;
+$coolFee        = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
+$strShippingFee = number_format($shippingFee) . ' yen';
+$strCoolFee     = number_format($coolFee) . ' yen';
+$tax            = floor(($wineTotal + $shippingFee + $coolFee) * 0.08);
+$strTax         = number_format($tax) . ' yen';
+$strWineTotal   = number_format($wineTotal) . ' yen';
+$grandTotal     = ($wineTotal + $shippingFee + $coolFee + $tax);
+$strGrandTotal  = number_format($grandTotal) . ' yen';
+
+$_SESSION['grand_total'] = $grandTotal;
+
+echo "
+        <tr>
+            <td colspan=\"3\">
+                <span class=\"engFont\">$strWineTotal</span> (小計)
+";
+
+if ($strShippingFee > 0)
+{
+    echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strShippingFee</span> (配送料)
+";
+}
+
+if ($strCoolFee > 0)
+{
+    echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strCoolFee</span> (クール便)
+";
+}
+
+echo "
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                <span class=\"engFont\">$strTax</span> (消費税)
+            </td>
+            <td colspan=\"2\">
+                <strong>
+                    総額:&nbsp;&nbsp;<span class=\"engFont\">$strGrandTotal</span>
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan=\"6\">
+                <img src=\"cart_images/happy_box.png\" />
+            </td>
+        </tr>
+    </tfoot>
+</table>
+";
+              
+echo BOX_END;

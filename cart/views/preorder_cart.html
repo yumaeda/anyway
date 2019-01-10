@@ -1,0 +1,234 @@
+<?php
+
+// GLOBAL VARIABLES
+$enableCheckout   = TRUE;
+$defaultReturnUrl = 'https://anyway-grapes.jp/preorder';
+$returnUrl        = empty($_REQUEST['returnUrl']) ? $defaultReturnUrl : $_REQUEST['returnUrl'];
+$postUri          = './cart.php?returnUrl=' . urlencode($returnUrl) . '&cart_type=' . $intCartType;
+$nextPageUri      = 'https://' . BASE_URL . 'checkout.php?returnUrl=' . urlencode($returnUrl) . '&cart_type=' . $intCartType;
+
+
+// FUNCTIONS
+function renderNavigationButtons()
+{
+    global $enableCheckout, $defaultReturnUrl, $nextPageUri;
+
+    $continueButtonHtml =
+        '<a href="' . $defaultReturnUrl . '">' .
+            '<img src="cart_images/continue_shopping.png" />' .
+        '</a>';
+
+    $checkoutButtonHtml = '<img src="cart_images/checkout_disabled.png" />';
+    if ($enableCheckout)
+    {
+        $checkoutButtonHtml =
+            '<a href="' . $nextPageUri . '">' .
+                '<img src="cart_images/checkout.png" />' .
+            '</a>';
+    }
+
+    echo '
+        <p style="text-align:center;font-size:14px;">' .
+            $continueButtonHtml . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $checkoutButtonHtml . '
+        </p>';
+}
+
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Shopping Cart</span>&nbsp;/&nbsp;<span style="font-size:10px;">ショッピングカート</span>
+<hr class="lineThin" />
+';
+
+if (!$fDisableEdit)
+{
+    echo '
+<p>
+    ご購入の数量を入力した後、[更新] ボタンをクリックすると、商品の合計が再計算されます。<br />
+    また、<u>削除</u>リンクをクリックして商品を買い物カゴから削除する事もできます。
+</p>
+<br />';
+}
+
+if ((session_status() == PHP_SESSION_NONE) ||
+    (!isset($_SESSION['user_id']) || !isset($_SESSION['user_name'])))
+{
+    $loginUrl  = 'https://anyway-grapes.jp/login.php';
+    $returnUrl = urlencode('https://anyway-grapes.jp/cart.php?cart_type=2');
+
+    echo '
+<p style="color:red;">
+    ※会員価格でご購入頂くには、会員登録後に必ず<a href="' . $loginUrl . '?return_url=' . $returnUrl . '">ログイン</a>してください。
+</p>
+<br />';
+}
+
+require_once('./common.php');
+
+echo '
+<form action="' . $postUri . '" method="POST">
+    <table class="cartTable">
+        <thead>
+            <tr>
+                <td>写真</td>
+                <td>商品名</td>
+                <td>数量</td>
+                <td>単価</td>
+                <td>金額</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>';
+
+$total          = 0;
+$cTotalWine     = 0;
+$cTotalSetWine  = 0;
+$strItemUnit    = '本';
+
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+{
+    $price = getPrice($row);
+
+    $stock          = $row['stock'];
+    $quantity       = $row['quantity'];
+    $intSubtotal    = $price * $quantity;
+    $subtotal       = number_format($intSubtotal);
+    $producerName   = $row['producer'] ? ('[' . $row['producer'] . ']') : '';
+    $itemName       = $row['vintage'] . ' ' . $row['combined_name'] . '<br />' . $producerName;
+    $barcodeNumber  = $row['barcode_number'];
+    $priceHtml      = generatePriceHtml($row);
+
+    $imgHtml      = "<img src=\"//anyway-grapes.jp/images/wines/100px/$barcodeNumber.png\" onerror=\"this.src='//anyway-grapes.jp/images/wines/100px/no_wine_photo.jpg';\" />";
+    $itemLinkHtml = "<span>$itemName</span>";
+    $cTotalWine  += $quantity;
+
+    echo '
+            <tr>
+                <td class="imgCol">' . $imgHtml . '</td>
+                <td class="nameCol">' . $itemLinkHtml . '</td>';
+
+    if (!$fDisableEdit)
+    {
+        echo '
+                <td>
+                    <input type="number" id="qtyFld" name="quantity[' . $barcodeNumber . ']" min="1" max="' . $stock . '" value="' . $quantity . '" /><br />
+                    <input type="submit" id="updateBtn" value="更新" />
+                </td>';
+    }
+    else
+    {
+        echo '
+                <td>' . $quantity . '</td>';
+    }
+
+    echo '
+                <td class="priceCol engFont">' . $priceHtml . '</td>
+                <td class="priceCol engFont">' . $subtotal . ' yen</td>
+                <td class="operationCol">';
+
+    if (!$fDisableEdit)
+    {
+        echo '
+                    <a id="' . $barcodeNumber . '" class="removeWineLnk" href="#">削除</a>';
+    }
+
+    echo '
+                </td>
+            </tr>';
+
+    $stock = $row['stock'] ? $row['stock'] : 0;
+    if ($stock == 0)
+    {
+        $errorMessage = '';
+
+        if (!$fDisableEdit)
+        {
+            $errorMessage =
+                '他のお客様が先に購入手続きをされたため、在庫が0個になりました。<br />
+                 大変申し訳ございませんが、"削除"リンクをクリックしてカートから削除して下さい。';
+        }
+        else
+        {
+            $errorMessage =
+                '申し訳ございません。この商品は完売いたしました。<br />
+                 お手数ですが、画面右下の"カートを空にする"をクリックしてカートを空にしてください。';
+        }
+
+        echo '
+            <tr>
+                <td colspan="6" class="errorCol">' . $errorMessage . '</td>
+            </tr>';
+
+        $enableCheckout = FALSE;
+    }
+    else if ($stock < $quantity)
+    {
+        echo '
+            <tr>
+                <td colspan="6" class="errorCol">
+                    「 ' . $itemName . ' 」の在庫が残り' . $stock . '個のため、ご希望の本数を購入頂く事ができません。お手数ですが、数量を変更後[更新]ボタンをクリックして下さい。
+                </td>
+            </tr>';
+
+        $enableCheckout = FALSE;
+    }
+
+    $total += $intSubtotal;
+}
+
+$cDeliveryBox       = getDeliveryBoxCount($cTotalWine);
+$cFreeBox           = getFreeBoxCount($total);
+$freeShippingTrHtml = '';
+
+if ($cFreeBox > 0)
+{
+    if ($cFreeBox > $cDeliveryBox)
+    {
+        $cFreeBox = $cDeliveryBox;
+    }
+
+    $freeShippingTrHtml = '
+            <tr>
+                <td colspan="6" style="color:green;">
+                    <span style="font-size:16px">' . $cFreeBox . '</span>&nbsp;個口分までの送料が無料になります（九州、沖縄、北海道を含む離島は除く）。
+                </td>
+            </tr>';
+}
+else
+{
+    $amountTillFree = number_format($intFreeShippingPrice - $total);
+
+    $freeShippingTrHtml = '
+            <tr>
+                <td colspan="6" style="color:red;">
+                    あと&nbsp;<span style="font-size:16px;">' . $amountTillFree . '</span>&nbsp;円で、1個口分の送料が無料になります（九州、沖縄、北海道を含む離島は除く）。
+                </td>
+            </tr>';
+}
+
+$formattedTotal = number_format($total) . ' yen';
+echo '
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <strong>
+                        合計&nbsp;' . $cTotalWine . '&nbsp;' . $strItemUnit . '&nbsp;[&nbsp;' . $cDeliveryBox . '&nbsp;個口&nbsp;]&nbsp;:&nbsp;&nbsp;<span class="engFont">' . $formattedTotal . '</span>（税抜）
+                    </strong>
+                </td>
+                <td colspan="2">
+                    <a id="clearCartLnk" href="#">カートを空にする</a>
+                </td>
+            </tr>' .
+            $freeShippingTrHtml . '
+        </tfoot>
+    </table>
+</form>
+<br /><br />';
+
+renderNavigationButtons();
+
+echo BOX_END;
+
+?>

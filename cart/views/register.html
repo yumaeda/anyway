@@ -1,0 +1,177 @@
+<?php
+
+require_once('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+echo '
+<span class="engFont" style="font-size:15px;">Registration</span>&nbsp;/&nbsp;<span style="font-size:10px;">' . $pageTitle . '</span>
+<hr class="lineThin" />
+<form action="./register.php" method="POST" accept-charset="utf-8">
+    <table class="cartTable" style="width:100%">
+        <tr>
+            <td class="labelCol">
+                <label for="last_name">姓<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('last_name', 'text', '倭印', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="first_name">名<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('first_name', 'text', '吞太郎', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="last_name_phonetic">せい（ふりがな）<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('last_name_phonetic', 'text', 'わいん', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="first_name_phonetic">めい（ふりがな）<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('first_name_phonetic', 'text', 'のみたろう', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="phone">電話番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('phone', 'text', '03-0000-0000', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="post_code">郵便番号<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('post_code', 'text', '156-0044', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">都道府県</td>
+            <td class="inputCol">';
+
+create_form_input('prefecture', 'select', ' ', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="address">住所<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('address', 'text', '世田谷区赤堤４－１－１　○○ビル１０１号室', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="date_of_birth">生年月日<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_date_of_birth_input($inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="email">メールアドレス<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('email', 'text', '', $inputErrors, $inputSrc);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="pwd">パスワード<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('pwd', 'password', '', $inputErrors);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td class="labelCol">
+                <label for="confirmation_pwd">パスワードの確認<span class="requiredCol">*</span></label>
+            </td>
+            <td class="inputCol">';
+
+create_form_input('confirmation_pwd', 'password', '', $inputErrors);
+
+echo '
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="color:blue;text-align:left;">※パスワードは、半角数字(1-9)、半角英字の大文字(A-Z)、および半角英字の小文字(a-z)をそれぞれ1文字以上含む合計６文字以上の文字列を入力してください。<br />例）aAbB1234</td>
+        </tr>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=member_rules"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+?>
+
+<?php echo BOX_END; ?>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+    $('input#post_code').jpostal({
+	postcode:
+	[
+	    '#post_code'
+	],
+	address:
+	{
+	    '#prefecture': '%3',
+	    '#address': '%4%5'
+	}
+    });
+});
+
+</script>
+

@@ -1,0 +1,264 @@
+<?php
+
+$strRefrigerated = 'いいえ';
+if (isset($_SESSION['refrigerated']) && $_SESSION['refrigerated'] == 1)
+{
+    $strRefrigerated = 'はい';
+}
+
+$deliveryDate = $_SESSION['delivery_date'];
+
+echo '
+<div class="progressPane" align="center">
+    <span>お客様情報</span>
+    <span>&gt;&gt;</span>
+    <span>配送情報</span>
+    <span>&gt;&gt;</span>
+    <span class="currentProgress">注文内容の確認</span>
+    <span>&gt;&gt;</span>
+    <span>決済方法の選択</span>
+    <span>&gt;&gt;</span>
+    <span>終了</span>
+</div>
+<br style="clear:all;"/>
+<div style="color:red;font-size:14px;padding:10px;margin:20px;border:solid 1px red;">
+    2017年4月27日より、<a href="http://www.jcdsc.org/pci_dss.php" target="_blank">PCI-DSS</a>に準拠し高度なセキュリティを誇る<a href="https://www.veritrans.co.jp/payment/security/" target="_blank">veritrans</a>の<a href="https://www.ec-cube.net/tsubo/2015/09/09/3728" target="_blank">トークン決済</a>を導入いたしました。このセキュリティ強化に伴い、決済方法選択後の最終確認ページが表示されなくなります（高いセキュリティレベルを確保するため、与信処理に利用されるトークンの有効期限が非常に短いためです）。<br /><br />
+    お手数をおかけいたしますが、次のページへ進む前に、ご注文の商品、お客様情報、および配送情報を再度ご確認ください。
+</div>
+<br style="clear:all;"/>
+';
+
+if ($intCartType == 0)
+{
+    include('./views/checkout_cart.html');
+}
+else if ($intCartType == 1)
+{
+    include('./views/checkout_happy_box.html');
+}
+else if ($intCartType == 2)
+{
+    include('./views/checkout_preorder_cart.html');
+}
+
+echo BOX_BEGIN;
+
+$returnUrl   = isset($_REQUEST['returnUrl']) ? $_REQUEST['returnUrl'] : '';
+$postUri     = '/confirmation_new.php?returnUrl=' . urlencode($returnUrl);
+$prevPageUri = 'https://' . BASE_URL . 'delivery.php?returnUrl=' . urlencode($returnUrl);
+
+if ($intCartType > 0)
+{
+    $postUri     .= '&cart_type=' . $intCartType;
+    $prevPageUri .= '&cart_type=' . $intCartType;
+}
+
+echo '
+<form action="' . $postUri . '" method="POST">
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+        <thead>
+            <tr>
+                <td colspan="2" style="text-align:left;">ご注文者の情報</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="labelCol">
+                    <label for="name">お名前</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['last_name'] . $_SESSION['first_name'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="phonetic">ふりがな</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['last_phonetic'] . $_SESSION['first_phonetic'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="post_code">郵便番号</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['post_code'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="prefecture">都道府県</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['prefecture'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="address">住所</label>
+                </td>
+                <td class="addressCol">
+                    <span>' . $_SESSION['address'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="phone">電話番号</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['phone'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="email">メールアドレス</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['email'] . '</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+        <thead>
+            <tr>
+                <td colspan="2" style="text-align:left;">配送先の情報</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="labelCol">
+                    <label for="name">お名前</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_last_name'] . $_SESSION['delivery_first_name'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="phonetic">ふりがな</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_last_phonetic'] . $_SESSION['delivery_first_phonetic'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="post_code">郵便番号</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_post_code'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="prefecture">都道府県</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_prefecture'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="address">住所</label>
+                </td>
+                <td class="addressCol">
+                    <span>' . $_SESSION['delivery_address'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="phone">電話番号</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_phone'] . '</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+        <thead>
+            <tr>
+                <td colspan="2" style="text-align:left;">配送日時＆配送方法</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="labelCol">
+                    <label for="deliveryCompany">配送業者</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_company'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="deliveryDate">配送希望日</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $deliveryDate . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="deliveryTime">配送希望時間帯</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['delivery_time'] . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="coolDelivery">クール便を利用する</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $strRefrigerated . '</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+        <thead>
+            <tr>
+                <td colspan="2" style="text-align:left;">その他</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="labelCol">
+                    <label for="mailMagazine">メールマガジンを購読する</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . ($_SESSION['mail_magazine'] == 1 ? 'はい' : 'いいえ') . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="labelCol">
+                    <label for="comment">備考</label>
+                </td>
+                <td class="valueCol">
+                    <span>' . $_SESSION['comment'] . '</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br style="clear:all;" />
+    <br /><br />
+    <div align="center">
+        <a href="' . $prevPageUri . '"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="nextBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+echo BOX_END;
+
+?>
