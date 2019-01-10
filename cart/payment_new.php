@@ -158,7 +158,7 @@ require_once('./common.php');
 
 // Get tax rate from config file.
 $config = include('./config.php');
-$taxRate = $config['tax']['rate'];
+$taxRate = $config['tax']['rate']();
 
 prepareNextQuery($dbc);
 

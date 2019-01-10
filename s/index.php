@@ -16,7 +16,7 @@ if (isset($_SESSION['user_id']) &&
 
 // Get tax rate from config file.
 $config = include('../config.php');
-$taxRate = $config['tax']['rate'];
+$taxRate = $config['tax']['rate']();
 
 echo '
 <!DOCTYPE html>
@@ -1433,7 +1433,7 @@ $('div#mainPage').on('pagecreate', function(event)
         var title         = '',
             taxedMinPrice = 0,
             taxedMaxPrice = 0,
-            taxRate       = <?= $taxRate ?>;
+            taxRate       = <?= json_encode($taxRate) ?>;
 
         if (this.id == 'oneThousandRangeLnk')
         {
