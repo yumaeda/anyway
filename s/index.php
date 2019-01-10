@@ -14,6 +14,10 @@ if (isset($_SESSION['user_id']) &&
     $userName = $_SESSION['user_name'];
 }
 
+// Get tax rate from config file.
+$config = include('../config.php');
+$taxRate = $config['tax']['rate'];
+
 echo '
 <!DOCTYPE html>
 <html>
@@ -1429,7 +1433,7 @@ $('div#mainPage').on('pagecreate', function(event)
         var title         = '',
             taxedMinPrice = 0,
             taxedMaxPrice = 0,
-            taxRate       = 0.08;
+            taxRate       = <?= $taxRate ?>;
 
         if (this.id == 'oneThousandRangeLnk')
         {
@@ -1462,8 +1466,8 @@ $('div#mainPage').on('pagecreate', function(event)
             taxedMaxPrice = 999999;
         }
 
-        var minPrice     = Math.floor(taxedMinPrice / (1 + taxRate)),
-            maxPrice     = Math.floor(taxedMaxPrice / (1 + taxRate)),
+        var minPrice     = Math.floor(taxedMinPrice / taxRate),
+            maxPrice     = Math.floor(taxedMaxPrice / taxRate),
             strCondition = '(price >= ' + minPrice + ') AND (price <= ' + maxPrice + ')';
 
         renderSearchResult(title, strCondition, 'price', 'type');

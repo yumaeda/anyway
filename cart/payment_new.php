@@ -156,6 +156,10 @@ function checkinItems($dbc, $userId)
 require(UTIL);
 require_once('./common.php');
 
+// Get tax rate from config file.
+$config = include('./config.php');
+$taxRate = $config['tax']['rate'];
+
 prepareNextQuery($dbc);
 
 $cartContents     = generateCartContens($dbc, $userId);
@@ -182,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         $orderId       = getOrderId();
         $coolFee       = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
-        $totalPayment  = floor(($wineTotal + $_SESSION['shipping_fee'] + $coolFee) * 1.08);
+        $totalPayment  = floor(($wineTotal + $_SESSION['shipping_fee'] + $coolFee) * $taxRate);
 
         $paymentMethod = getPostValue('payment', true, $inputErrors);
         if ($paymentMethod == 1) // Compare with '==' since the post value is a string.
