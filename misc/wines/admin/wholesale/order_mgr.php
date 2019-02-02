@@ -58,13 +58,17 @@ if ($result !== FALSE)
           </thead>
           <tbody>';
 
+    // Get tax rate from config file.
+    $config = include('../../../config.php');
+    $taxRate = $config['tax']['rate']();
+
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
     {
         $orderId      = 'ANYWAY_WS_' . str_pad($row['id'], 8, '0', STR_PAD_LEFT);
         $name         = $row['name'];
         $shippingFee  = $row['shipping_fee'];
         $wineTotal    = $row['wine_total'];
-        $total        = floor(1.08 * ($wineTotal + $shippingFee));
+        $total        = floor((1 + $taxRate) * ($wineTotal + $shippingFee));
         $paymentMethod = $row['payment_method'];
         $deliveryDate = $row['delivery_date'];
         $deliveryTime = $row['delivery_time'];

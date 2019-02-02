@@ -1,8 +1,13 @@
 <?php
 
+// Get tax rate from config file.
+$curDir = dirname(__FILE__);
+$config = include("$curDir/../../config.php");
+$taxRate = $config['tax']['rate']();
+
 function generateConfirmedItemsText($dbc, $strConfirmedItems)
 {
-    global $memberDiscount, $shippingFee, $totalWinePrice, $paymentMethod;
+    global $memberDiscount, $shippingFee, $totalWinePrice, $paymentMethod, $taxRate;
 
     $text = '';
     if (!empty($strConfirmedItems))
@@ -82,7 +87,7 @@ function generateConfirmedItemsText($dbc, $strConfirmedItems)
         }
 
         $unTaxedTotal = ($totalWinePrice + $shippingFee);
-        $grandTotal   = floor(1.08 * $unTaxedTotal);
+        $grandTotal   = floor((1 + $taxRate) * $unTaxedTotal);
         $tax          = $grandTotal - $unTaxedTotal;
 
         // TODO: Add discount price for lucky bag.
@@ -156,7 +161,7 @@ function generatePaymentMethodText($intTotalPayment)
 //     $deliveryTime
 // --------------------------------
 $strToday          = date('Y.m.d');
-$totalPayment      = floor(1.08 * ($totalWinePrice + $shippingFee));
+$totalPayment      = floor((1 + $taxRate) * ($totalWinePrice + $shippingFee));
 $cartContentsText  = generateConfirmedItemsText($dbc, $cartContents);
 $paymentMethodText = generatePaymentMethodText($totalPayment);
 

@@ -11,6 +11,11 @@
 
 $strOrderedWinesBody = '';
 
+// Get tax rate from config file.
+$curDir = dirname(__FILE__);
+$config = include("$curDir/../../../config.php");
+$taxRate = $config['tax']['rate']();
+
 if (!empty($strOrderedWines))
 {
     $rgstrWine = explode('#;', $strOrderedWines);
@@ -61,7 +66,7 @@ if (!empty($strOrderedWines))
     if (isset($fIncludePrice) && $fIncludePrice)
     {
         $unTaxedTotal    = ($totalWinePrice + $shippingFee);
-        $grandTotal      = floor(1.08 * $unTaxedTotal);
+        $grandTotal      = floor((1 + $taxRate) * $unTaxedTotal);
         $tax             = $grandTotal - $unTaxedTotal;
         $strTotalPrice   = number_format($totalWinePrice);
         $strShippingFee  = number_format($shippingFee);

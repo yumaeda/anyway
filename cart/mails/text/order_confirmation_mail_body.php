@@ -1,8 +1,10 @@
 <?php
 
+$curDir = dirname(__FILE__);
+
 function generateCartText(&$totalPayment)
 {
-    global $dbc;
+    global $dbc, $curDir;
 
     $text = '';
 
@@ -43,10 +45,14 @@ function generateCartText(&$totalPayment)
 
         // TODO: Add discount price for lucky bag.
 
+        // Get tax rate from config file.
+        $config = include("$curDir/../../config.php");
+        $taxRate = $config['tax']['rate']();
+
         $shippingCost = $_SESSION['shipping_fee'];
         $coolCost     = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
         $totalPayment = ($totalWinePrice + $shippingCost + $coolCost);
-        $totalWineTax = floor($totalPayment * 0.08);
+        $totalWineTax = floor($totalPayment * $taxRate);
         $totalPayment = ($totalPayment + $totalWineTax);
 
         $strTotalPrice   = number_format($totalWinePrice);
@@ -174,4 +180,4 @@ $stockNote
 
 //----------------------------------------------
 
-include_once(dirname(__FILE__) . '/mail_body_base.php');
+include_once("$curDir/mail_body_base.php");

@@ -66,11 +66,15 @@ if ($result !== FALSE)
     }
 }
 
+// Get tax rate from config file.
+$config = include('./config.php');
+$taxRate = $config['tax']['rate']();
+
 $shippingFee    = isset($_SESSION['shipping_fee']) ? $_SESSION['shipping_fee'] : 0;
 $coolFee        = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
 $strShippingFee = number_format($shippingFee) . ' yen';
 $strCoolFee     = number_format($coolFee) . ' yen';
-$tax            = floor(($wineTotal + $shippingFee + $coolFee) * 0.08);
+$tax            = floor(($wineTotal + $shippingFee + $coolFee) * $taxRate);
 $strTax         = number_format($tax) . ' yen';
 $strWineTotal   = number_format($wineTotal) . ' yen';
 $grandTotal     = ($wineTotal + $shippingFee + $coolFee + $tax);

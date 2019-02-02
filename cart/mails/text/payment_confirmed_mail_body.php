@@ -1,8 +1,13 @@
 <?php
 
+// Get tax rate from config file.
+$curDir = dirname(__FILE__);
+$config = include("$curDir/../../config.php");
+$taxRate = $config['tax']['rate']();
+
 function generatePurchasedItemsText($dbc, $strConfirmedItems)
 {
-    global $memberDiscount, $shippingFee, $totalWinePrice;
+    global $memberDiscount, $shippingFee, $totalWinePrice, $taxRate;
 
     $text = '';
     if (!empty($strConfirmedItems))
@@ -82,7 +87,7 @@ function generatePurchasedItemsText($dbc, $strConfirmedItems)
         }
 
         $unTaxedTotal = ($totalWinePrice + $shippingFee);
-        $grandTotal   = floor(1.08 * $unTaxedTotal);
+        $grandTotal   = floor((1 + $taxRate) * $unTaxedTotal);
         $tax          = $grandTotal - $unTaxedTotal;
 
         $strTotalPrice   = number_format($totalWinePrice);
@@ -122,7 +127,7 @@ _____________________________
 //     $deliveryDate
 //     $deliveryTime
 // --------------------------------
-$totalPayment     = floor(1.08 * ($totalWinePrice + $shippingFee));
+$totalPayment     = floor((1 + $taxRate) * ($totalWinePrice + $shippingFee));
 $strTotalPayment  = number_format($totalPayment);
 $cartContentsText = generatePurchasedItemsText($dbc, $cartContents);
 
