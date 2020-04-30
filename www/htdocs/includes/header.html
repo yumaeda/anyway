@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Yukitaka Maeda">
+        <title><?= !empty($pageTitle) ?  $pageTitle : 'Conceptual Wine Boutique Anyway-Grapes'; ?></title>
+        <script>
+
+        document.createElement('header');
+        document.createElement('aside');
+        document.createElement('footer');
+
+        function preventBack()
+        {
+            window.history.forward();
+        }
+
+        setTimeout('preventBack()', 0);
+        window.onunload = function() { null };
+
+        </script>
+        <link rel="stylesheet" href="//anyway-grapes.jp/css/cart.css" />
+        <style>
+
+        @media only screen and (max-device-width: 480px)
+        {
+            header, aside, div.contents, footer
+            {
+                width: 100%;
+            }
+
+            td.inputCol
+            {
+                width: auto;
+            }
+
+            td.inputCol input
+            {
+                height: 20px;
+            }
+
+            td.addressCol input
+            {
+                height: 20px;
+            }
+
+            img#cardLogos
+            {
+                width: 75%;
+            }
+        }
+
+        @media print
+        {
+            header
+            {
+                display: none;
+            }
+        }
+
+        </style>
+    </head>
+    <body>
+        <header><img class="logoImg" src="//anyway-grapes.jp/cart_images/logo_top.png" alt="Logo"></header>
+        <aside><?= !empty($asideInnerHtml) ? $asideInnerhtml : ''; ?></aside>
+        <div class="contents">
+

@@ -1,0 +1,28 @@
+        </div>
+        <footer class="engFont">
+            <span>&copy; Conceptual Wine Boutique Anyway-Grapes <?php echo date('Y'); ?></span>
+            <?php
+if (!empty($_SERVER['HTTPS']))
+{
+    echo '
+            <table style="margin-top:10px;">
+                <tr>
+                    <td>
+                        <span id="ss_gmo_img_wrapper_100-50_image_ja">
+                            <a href="https://jp.globalsign.com/" target="_blank" rel="nofollow">
+                                <img alt="SSL　GMOグローバルサインのサイトシール" border="0" id="ss_img" src="//seal.globalsign.com/SiteSeal/images/gs_noscript_100-50_ja.gif">
+                            </a>
+                        </span>
+                        <script type="text/javascript" src="//seal.globalsign.com/SiteSeal/gmogs_image_100-50_ja.js" defer="defer"></script>
+                    </td>
+                    <td style="text-align:left;padding-left:10px;">
+                        当サイトでは、お客様に安心して買い物をしていただくため、グローバルサインから発行されたSSLサーバ証明書により、通信情報の暗号化とドメインの証明を行っています。
+                    </td>
+                </tr>
+            </table>
+';
+}
+            ?>
+        </footer>
+    </body>
+</html>
