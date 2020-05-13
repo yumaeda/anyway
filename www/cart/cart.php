@@ -21,6 +21,16 @@ else
     $userId = startCartSession($dbc);
 }
 
+// Clear shipping fee if set.
+if (isset($_SESSION['shipping_fee'])) {
+    unset($_SESSION['shipping_fee']);
+}
+
+// Clear cool fee if set.
+if (isset($_SESSION['cool_fee'])) {
+    unset($_SESSION['cool_fee']);
+}
+
 $fDisableEdit = isset($_SESSION['disable_cart_edit']);
 $intCartType  = isset($_REQUEST['cart_type']) ? $_REQUEST['cart_type'] : 0;
 if ($intCartType == 0)
@@ -131,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         }
     }
 }
+
 
 if ($intCartType == 0)
 {
