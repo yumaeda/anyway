@@ -3,33 +3,7 @@
 // Delete the default Session cookie first.
 setcookie(session_name(), '', time() - 3600, '/');
 
-require('./includes/config.inc.php');
-require(MYSQL);
-
-if (!isset($_COOKIE['SESSION']) || (strlen($_COOKIE['SESSION']) !== 32))
-{
-    $userId = openssl_random_pseudo_bytes(16);
-    $userId = bin2hex($userId);
-
-    // Set cookie, which expires in 24 hours.
-    $expireDate = time() + (1 * 24 * 60 * 60);
-    setcookie('SESSION', $userId, $expireDate, '/', 'anyway-grapes.jp');
-}
-else
-{
-    session_id($_COOKIE['SESSION']);
-    $userId = startCartSession($dbc);
-}
-
-// Clear shipping fee if set.
-if (isset($_SESSION['shipping_fee'])) {
-    unset($_SESSION['shipping_fee']);
-}
-
-// Clear cool fee if set.
-if (isset($_SESSION['cool_fee'])) {
-    unset($_SESSION['cool_fee']);
-}
+require_once('./clear_shipping_fee.php');
 
 $fDisableEdit = isset($_SESSION['disable_cart_edit']);
 $intCartType  = isset($_REQUEST['cart_type']) ? $_REQUEST['cart_type'] : 0;
