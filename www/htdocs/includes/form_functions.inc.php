@@ -38,11 +38,6 @@ function create_form_input($name, $type, $example = '', $errors = array(), $valu
         if (isset($_POST[$name]))
         {
             $value = htmlspecialchars($_POST[$name], ENT_QUOTES, 'UTF-8');
-
-            if ($value && get_magic_quotes_gpc())
-            {
-                $value = stripslashes($value);
-            }
         }
     }
 
