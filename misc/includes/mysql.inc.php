@@ -37,12 +37,6 @@ function prepareNextQuery($dbc)
 
 function escape_data($data, $dbc)
 {
-    // Strip the extra slashes if Magic Quotes is on.
-    if (get_magic_quotes_gpc())
-    {
-        $data = stripslashes($data);
-    }
-
     return mysqli_real_escape_string($dbc, trim($data));
 }
 

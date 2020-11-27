@@ -101,11 +101,6 @@ function getPostValue($key, $usedByQuery, &$errors)
     if (isset($_POST[$key]))
     {
         $value = $_POST[$key];
-        if (get_magic_quotes_gpc())
-        {
-            $value = stripslashes($value);
-        }
-
         if ($usedByQuery)
         {
             $value = addslashes($value);
