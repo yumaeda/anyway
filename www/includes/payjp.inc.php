@@ -1,6 +1,6 @@
 <?php
 
-$PUBLIC_KEY = 'pk_test_728555f2dde831e84a99ef70';
+$PUBLIC_KEY = 'xxxxxxxxx';
 
 function getTokenId($cardNumber, $expMonth, $expYear, $cvc)
 {
