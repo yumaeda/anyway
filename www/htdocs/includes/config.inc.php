@@ -13,6 +13,7 @@ define('UTIL', BASE_URI . 'includes/util.inc.php');
 define('E_MAIL', BASE_URI . 'includes/text_mail.inc.php');
 //define('E_MAIL', BASE_URI . 'includes/mail.inc.php');
 define('VERITRANS', BASE_URI . 'includes/veritrans.inc.php');
+define('PAYJP', BASE_URI . 'includes/payjp.inc.php');
 
 define('BOX_BEGIN', '
     <div class="box alt">

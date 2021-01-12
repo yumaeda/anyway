@@ -1,0 +1,166 @@
+<?php
+
+echo '
+<div class="progressPane" align="center">
+    <span>お客様情報</span>
+    <span>&gt;&gt;</span>
+    <span>配送情報</span>
+    <span>&gt;&gt;</span>
+    <span>注文内容の確認</span>
+    <span>&gt;&gt;</span>
+    <span class="currentProgress">決済方法の選択</span>
+    <span class="currentProgress">&gt;&gt;</span>
+    <span>終了</span>
+</div>
+<br style="clear:all;"/>
+
+<div style="color:red;font-size:14px;padding:10px;margin:20px;border:solid 1px red;">
+    ↓の[注文を確定する]をクリックする前に、ご注文の商品、お客様情報、および配送情報を再度ご確認ください。
+</div>
+<br style="clear:all;"/>
+';
+
+if ($intCartType == 0)
+{
+    include('./views/checkout_cart.html');
+}
+else if ($intCartType == 1)
+{
+    include('./views/checkout_happy_box.html');
+}
+else if ($intCartType == 2)
+{
+    include('./views/checkout_preorder_cart.html');
+}
+
+include('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+$intHour = (int)date('H');
+$deliveryDate = $_SESSION['delivery_date'];
+
+if ($errorMessage !== '')
+{
+    echo '
+        <br /><br />
+        <span class="errorSpan">' .
+            $errorMessage .
+        '</span>';
+}
+
+$returnUrl = isset($_REQUEST['returnUrl']) ? $_REQUEST['returnUrl'] : '';
+$postUri = '/payment_payjp.php?returnUrl=' . urlencode($returnUrl);
+$prevPageUri = 'https://' . BASE_URL . 'confirmation_new.php?returnUrl=' . urlencode($returnUrl);
+
+if ($intCartType > 0)
+{
+    $postUri .= '&cart_type=' . $intCartType;
+    $prevPageUri .= '&cart_type=' . $intCartType;
+}
+
+echo '
+<form action="' . $postUri . '" method="POST">
+    <br />
+    <br />
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td colspan="2" style="text-align:left;">決済方法</td>
+        </tr>
+    </thead>
+    <tbody>';
+ 
+if ($_SESSION['grand_total'] < 500000)
+{
+echo '
+       <tr>
+            <td class="textNoWrap">
+                <input type="radio" value="1" name="payment" checked="checked" />
+                <label>クレジットカード</label>
+            </td>
+            <td class="inputCol">
+                <table id="cardTable">
+                    <tr>
+                        <td class="labelCol">カード会社</td>
+                        <td><img id="cardLogos" src="cart_images/creditcard_logos.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">カード番号<br />(半角数字)</td>
+                        <td>';
+create_credit_card_number_input($inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">カード確認コード<br />(CVC/CVV)</td>
+                        <td><span style="font-size:10px;">カード裏面の署名欄に記載された末尾3桁のコードです。AMEXの場合、カード前面の末尾4桁のコードとなります。</span>
+                            <br /><br />';
+
+create_form_input('cvc', 'text', '000', $inputErrors, 'POST', array('maxlength' => 4, 'size' => 4, 'autocomplete' => 'off'));
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">名義人（半角英数字）</td>
+                        <td>';
+create_form_input('holder_name', 'text', 'NOMITARO WAIN', $inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">有効期限</td>
+                        <td>';
+create_expiration_input($inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>';
+}
+
+$deliveryDate = $_SESSION['delivery_date'];
+$fInStorePickup = (isset($_SESSION['in_store_pickup']) && ($_SESSION['in_store_pickup'] == 1));
+if (!$fInStorePickup)
+{
+echo '
+        <tr>
+            <td class="textNoWrap">
+                <input type="radio" value="2" name="payment" />
+                <label>銀行振り込み</label>
+            </td>
+            <td class="inputCol">
+                商品の発送は、ご入金確認後となります（振込み手数料はお客様のご負担となります）。お届け日の指定をされる場合はご注意下さい。<br />
+                <span style="color:red;font-size:10px;">※ご注文から7日以内にご入金の確認が取れない場合は、本注文をキャンセルさせていただきます。ご了承下さい。</span>
+                <br /><br />
+                [　お振込先　]
+                <fieldset>
+                    昭和信用金庫 下高井戸支店（013）<br />
+                    普）0348121<br />
+                    <br />
+                    ユ）セイヤ
+                </fieldset>
+            </td>
+        </tr>';
+}
+
+echo '
+    </tbody>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="' . $prevPageUri . '"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="confirmBtn" type="image" src="cart_images/confirm_btn.png" value="" />
+        <br />
+        <span style="font-size:13px;">※商品の性質上、注文確定後の返品・交換は受け付けておりませんのでご了承下さい。</span>
+    </div>
+</form>';
+
+?>
+
+<?php echo BOX_END; ?>
