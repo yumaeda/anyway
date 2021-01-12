@@ -1,8 +1,9 @@
 <?php
 
 $PUBLIC_KEY = 'xxxxxxxxx';
+$PRIVATE_KEY = 'yyyyyyyy';
 
-function getTokenId($cardNumber, $expMonth, $expYear, $cvc)
+function _getTokenId($cardNumber, $expMonth, $expYear, $cvc)
 {
     global $PUBLIC_KEY;
 
@@ -31,11 +32,26 @@ function getTokenId($cardNumber, $expMonth, $expYear, $cvc)
     return $tokenId;
 }
 
-$cardNumber = '4242424242424242';
-$expMonth = '12';
-$expYear = '2022';
-$cvc = '123';
+function chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYear, $cvc, $fCapture)
+{
+    global $PRIVATE_KEY;
 
-echo getTokenId($cardNumber, $expMonth, $expYear, $cvc);
+    $tokenId = _getTokenId($cardNumber, $expMonth, $expYear, $cvc);
+    if ($tokenId !== '')
+    {
+        $curDirPath = dirname(__FILE__);
+        require_once "$curDirPath/../includes/payjp-php/init.php";
 
-?>
+        \Payjp\Payjp::setApiKey($PRIVATE_KEY);
+        $charge = \Payjp\Charge::create(array(
+            'card' => $tokenId,
+            'amount' => $totalPayment,
+            'captured' => $fCapture,
+            'product' => $orderId,
+            'currency' => 'jpy'
+        ));
+        return $charge; 
+    }
+
+    return null;
+}
