@@ -375,6 +375,15 @@ function sendErrorMail($e)
     error_log($result, 1, 'sysadm@anyway-grapes.jp');
 }
 
+function sendDebugMail($e)
+{
+    ob_start();
+    var_dump($e);
+    $result = ob_get_clean();
+
+    error_log($result, 1, 'yumaeda@gmail.com');
+}
+
 function handleErrorResponseException($e, &$inputErrors)
 {
     global $maintenanceError;

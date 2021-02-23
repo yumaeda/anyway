@@ -221,24 +221,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     require_once(PAYJP);
 
                     $objResponse = chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYear, $cvc, $fCapturePayment);
-                    var_dump($objResponse);
                     if ($objResponse === null)
                     {
                         $errorMessage = 'システムのメンテナンス中のため、ご注文を承ることができませんでした。お手数ですが、数時間後に再度お試し下さい。';
                     }
                     else if (!$objResponse->paid)
                     {
+                        $errorEmail = 'yumaeda@gmail.com';
                         $vResultCode = $objResponse->failure_code;
                         if ($vResultCode === '')
                         {
                             echo $objResponse->failure_message;
-                            // error_log($objResponse->failure_message, 1, 'sysadm@anyway-grapes.jp');
+                            error_log($objResponse->failure_message, 1, $errorEmail);
                             $inputErrors['card_number'] = '指定されたクレジットカードでは決済できませんでした。カード番号、セキュリティーコード、有効期限を確認のうえ再入力頂くか、「銀行振り込み」を選択して下さい。';
                         }
                         else
                         {
                             echo $objResponse->failure_message;
-                            // error_log($vResultCode . ': ' . $objResponse->failure_message, 1, 'sysadm@anyway-grapes.jp');
+                            error_log($vResultCode . ': ' . $objResponse->failure_message, 1, $errorEmail);
                             switch ($vResultCode)
                             {
                                 case 'incorrect_card_data': // いずれかのカード情報が誤っている
@@ -299,8 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 }
                 catch (\Exception $e)
                 {
-                    echo $e->getMessage();
-                    // sendErrorMail($e);
+                    sendDebugMail($e);
                     $errorMessage = 'システムのメンテナンス中のため、ご注文を承ることができませんでした。お手数ですが、数時間後に再度お試し下さい。';
                 }
             }
