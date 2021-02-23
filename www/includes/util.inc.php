@@ -1,6 +1,4 @@
 <?php
-namespace Yumaeda\Shipping\YamatoShippingFee;
-
 $curDirPath = dirname(__FILE__);
 require_once("$curDirPath/shipping.inc.php");
 
@@ -231,9 +229,8 @@ function getBoxCountForYamato($qty, $fCool)
 
 function getCoolFeeForYamato($qty)
 {
-    $yamato_fee = new YamatoShippingFee('TOKYO', $qty, true, 5000); 
-
-    return $yamato_fee->getRefrigeratedDeliveryFee($qty);
+    global $cool_fee;
+    return $cool_fee * getBoxCountForYamato($qty, TRUE);
 }
 
 function getShippingFeeForYamato($qty, $price, $prefecture, $fCool, $freeShippingPrice, $strDeliveryDate)
