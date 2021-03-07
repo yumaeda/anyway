@@ -246,11 +246,11 @@ $errorMessage = '';
 $inputErrors  = array();
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    // if (checkoutItems($dbc, $userId))
-    // {
+    if (checkoutItems($dbc, $userId))
+    {
         $orderId = getOrderId();
         $coolFee = isset($_SESSION['cool_fee']) ? $_SESSION['cool_fee'] : 0;
-        $totalPayment  = floor(($wineTotal + $_SESSION['shipping_fee'] + $coolFee) * (1 + $taxRate));
+        $totalPayment = floor(($wineTotal + $_SESSION['shipping_fee'] + $coolFee) * (1 + $taxRate));
 
         $paymentMethod = getPostValue('payment', true, $inputErrors);
         if ($paymentMethod == 1) // Compare with '==' since the post value is a string.
@@ -325,8 +325,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
         if (empty($inputErrors) && ($errorMessage === ''))
         {
-            echo 'SUCCESS';
-            /*
             $shippingId = $_SESSION['shipping_id'];
             $memberDiscount = (isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) ? 1 : 0;
 
@@ -381,24 +379,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             {
                 error_log("Stored Procedure Failure: add_order($orderId, $shippingId, $cartContents, 0, $paymentMethod, $wineTotal)", 1, 'sysadm@anyway-grapes.jp');
             }
-            */
         }
 
-        // checkinItems($dbc, $userId);
-    // }
-    /*
+        checkinItems($dbc, $userId);
+    }
     else
     {
         redirectToPage("cart.php?cart_type=$intCartType");
     }
-    */
 }
-/*
 else
 {
     unset($_SESSION['payment_method']);
 }
-*/
 
 $pageTitle = '決済方法の選択｜anyway-grapes.jp';
 include('./includes/header.html');
