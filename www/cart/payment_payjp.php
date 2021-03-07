@@ -7,6 +7,7 @@ $userId = startCartSession($dbc);
 $intCartType = isset($_REQUEST['cart_type']) ? $_REQUEST['cart_type'] : 0;
 $normalItemTotal = 0;
 $fCapturePayment = ($intCartType != 2);
+$SYSTEM_ERROR = 'SYSTEM_ERROR';
 
 // Redirect to final.php if the order is already processed.
 if (isset($_SESSION['paid_order']))
@@ -20,7 +21,6 @@ if (!isset($_SESSION['shipping_fee']) ||
 {
     redirectToPage("checkout.php?cart_type=$intCartType");
 }
-
 
 function generateCartContens($dbc, $userId)
 {
@@ -155,6 +155,8 @@ function checkinItems($dbc, $userId)
 
 function getCardErrorMessage($errorCode)
 {
+    global $SYSTEM_ERROR;
+
     $errorMessage = '';
     switch ($errorCode)
     {
@@ -208,6 +210,7 @@ function getCardErrorMessage($errorCode)
         case 'not_allowed_method': // 許可されていないHTTPメソッド
         case 'over_capacity': // レートリミットに到達
         default:
+            $errorMessage = $SYSTEM_ERROR;
             break;
     }
 
@@ -290,16 +293,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         if ($objResponse->error) {
                             if (isset($objResponse->error->code)) {
                                 $cardError = getCardErrorMessage($objResponse->error->code);
-                            } else {
-                                $errorMessage = $defaultErrorMessage;
                             }
                         } else if (!$objResponse->paid) {
                             $vResultCode = $objResponse->failure_code;
                             if ($vResultCode === '') {
-                                error_log($objResponse->failure_message, 1, $errorEmail);
                                 $cardError = '指定されたクレジットカードでは決済できませんでした。カード番号、セキュリティーコード、有効期限を確認のうえ再入力頂くか、「銀行振り込み」を選択して下さい。';
                             } else {
-                                error_log($vResultCode . ': ' . $objResponse->failure_message, 1, $errorEmail);
                                 $cardError = getCardErrorMessage($vResultCode);
                             }
                         }
@@ -309,12 +308,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         $cardError = getCardErrorMessage($e->jsonBody['error']['code']);
                     } else {
                         sendDebugMail($e);
-                        $errorMessage = $defaultErrorMessage;
+                        $cardError = $SYSTEM_ERROR;
                     }
                 }
 
                 if ($cardError !== '') {
-                    $inputErrors['card_number'] = $cardError;
+                    if ($cardError === $SYSTEM_ERROR) {
+                        $errorMessage = $defaultErrorMessage;
+                        $cardError = '';
+                    } else {
+                        $inputErrors['card_number'] = $cardError;
+                    }
                 }
             }
         }
