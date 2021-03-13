@@ -2,6 +2,7 @@
 
 $PUBLIC_KEY = 'XXXX';
 $PRIVATE_KEY = 'YYYY';
+$SYSTEM_ERROR = 'SYSTEM_ERROR';
 
 function _getTokenId($cardNumber, $expMonth, $expYear, $cvc)
 {
@@ -66,7 +67,9 @@ function chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYe
 
 function convertPayjpErrorCodeToText($errorCode)
 {
-    $errorMessage = 'SYSTEM_ERROR';
+    global $SYSTEM_ERROR;
+
+    $errorMessage = $SYSTEM_ERROR;
     switch ($errorCode)
     {
         case 'incorrect_card_data': // いずれかのカード情報が誤っている
