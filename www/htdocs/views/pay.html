@@ -1,0 +1,111 @@
+<?php
+
+include('./includes/form_functions.inc.php');
+
+echo BOX_BEGIN;
+
+$intHour = (int)date('H');
+$orderId = isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
+$amount = isset($_REQUEST['amount']) ? $_REQUEST['amount'] : 0;
+
+if ($errorMessage !== '')
+{
+    echo '
+        <br /><br />
+        <span class="errorSpan">' .
+            $errorMessage .
+        '</span>';
+}
+
+$postUri = '/pay.php';
+$prevPageUri = 'https://' . BASE_URL;
+
+echo '
+<form action="' . $postUri . '" method="POST">
+    <table class="cartTable" style="width:100%">
+    <thead>
+        <tr>
+            <td>決済方法</td>
+            <td><img id="cardLogos" src="cart_images/creditcard_logos.png" /></td>
+        </tr>
+    </thead>
+    <tbody>
+       <tr>
+            <td class="textNoWrap">
+                <input type="radio" value="1" name="payment" checked="checked" />
+                <label>クレジットカード</label>
+            </td>
+            <td class="inputCol">
+                <table id="cardTable">
+                    <tr>
+                        <td class="labelCol">オーダーID</td>
+                        <td><input type="hidden" name="order_id" value="' . $orderId . '">' . $orderId. '</td>
+                        <td>
+';
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">お支払い金額</td>
+                        <td><input type="hidden" name="amount" value="' . $amount . '">' . $amount . '</td>
+';
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">カード番号<br />(半角数字)</td>
+                        <td>
+';
+create_credit_card_number_input($inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">カード確認コード<br />(CVC/CVV)</td>
+                        <td><span style="font-size:10px;">カード裏面の署名欄に記載された末尾3桁のコードです。AMEXの場合、カード前面の末尾4桁のコードとなります。</span>
+                            <br /><br />
+';
+
+create_form_input('cvc', 'text', '000', $inputErrors, 'POST', array('maxlength' => 4, 'size' => 4, 'autocomplete' => 'off'));
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">名義人（半角英数字）</td>
+                        <td>
+';
+
+create_form_input('holder_name', 'text', 'NOMITARO WAIN', $inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelCol">有効期限</td>
+                        <td>
+';
+
+create_expiration_input($inputErrors);
+
+echo '
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <br style="clear:all;" />
+    <div align="center">
+        <a href="' . $prevPageUri . '"><img id="backBtn" src="cart_images/back_btn.png" /></a>
+        <input id="confirmBtn" type="image" src="cart_images/next_btn.png" value="" />
+    </div>
+</form>';
+
+echo BOX_END;
+
+?>
