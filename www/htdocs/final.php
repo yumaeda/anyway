@@ -9,8 +9,8 @@ function subscribeToMailMagazine($mail, $firstName, $lastName)
 {
     require_once('../includes/Mailchimp.php');
 
-    $apiKey     = '36d49c517896ac4996e00e46252b85fd-us8';
-    $listId     = '136d202046';
+    $apiKey     = '<API KEY>';
+    $listId     = '<LIST ID>';
     $merge_vars = array(
         'FNAME' => $firstName,
         'LNAME' => $lastName
