@@ -30,7 +30,8 @@ $textMessage = "
 ━━…━━…━━…━━
 
 
-$strCustomerName$strOrderId" . "この度はAnyway-Grapesをご利用頂きまして、誠にありがとうございます。
+$strCustomerName$strOrderId" . "
+この度はAnyway-Grapesをご利用頂きまして、誠にありがとうございます。
 
 $body
 

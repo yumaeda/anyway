@@ -7,6 +7,7 @@ $inputErrors  = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
+    $email = getPostValue('email', true, $inputErrors);
     $amount = getPostValue('amount', true, $inputErrors);
     $orderId = getPostValue('order_id', true, $inputErrors);
     $cvc = getPostValue('cvc', true, $inputErrors);
@@ -35,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
     if (empty($inputErrors))
     {
-/*
         $defaultErrorMessage = 'システムのメンテナンス中のため、ご注文を承ることができませんでした。お手数ですが、数時間後に再度お試し下さい。';
         $cardError = '';
         try {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
             $errorEmail = 'yumaeda@gmail.com';
             $errorMessage = '';
-            $objResponse = chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYear, $cvc, $fCapturePayment);
+            $objResponse = chargeWithPayjp($orderId, $amount, $cardNumber, $expMonth, $expYear, $cvc, true);
             if ($objResponse === null) {
                 $errorMessage = $defaultErrorMessage;
             } else {
@@ -76,8 +76,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             } else {
                 $inputErrors['card_number'] = $cardError;
             }
+        } else {
+            $subject = 'Anyway-Grapes: お支払金額';
+            $orderEmail = 'order@anyway-grapes.jp';
+            $archiveEmail = 'archive@anyway-grapes.jp';
+
+            require_once('./mails/text/payment_confirmed_mail_body.php');
+            require(E_MAIL);
+            sendMailAsPlainText(
+                $email,
+                $holderName,
+                $orderEmail,
+                $archiveEmail,
+                $subject,
+                $textMessage
+            );
+            redirectToPage('paid.php');
         }
-    */
     }
 }
 
