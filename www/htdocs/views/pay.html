@@ -4,7 +4,7 @@ include('./includes/form_functions.inc.php');
 
 echo BOX_BEGIN;
 
-$intHour = (int)date('H');
+$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : '';
 $orderId = isset($_REQUEST['order_id']) ? $_REQUEST['order_id'] : '';
 $amount = isset($_REQUEST['amount']) ? $_REQUEST['amount'] : 0;
 
@@ -38,8 +38,12 @@ echo '
             <td class="inputCol">
                 <table id="cardTable">
                     <tr>
+                        <td class="labelCol">Eメール</td>
+                        <td><input type="hidden" name="email" value="' . $email . '">' . $email . '</td>
+                    </tr>
+                    <tr>
                         <td class="labelCol">オーダーID</td>
-                        <td><input type="hidden" name="order_id" value="' . $orderId . '">' . $orderId. '</td>
+                        <td><input type="hidden" name="order_id" value="' . $orderId . '">' . $orderId . '</td>
                         <td>
 ';
 
