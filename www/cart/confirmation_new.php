@@ -15,7 +15,7 @@ if (isset($_SESSION['paid_order']))
 }
 
 // Redirect to checkout.php if the shipping information is not stored.
-if (!isset($_SESSION['shipping_fee']) || 
+if (!isset($_SESSION['shipping_fee']) ||
     !isset($_SESSION['shipping_id']))
 {
     redirectToPage("checkout.php?cart_type=$intCartType");
@@ -23,10 +23,10 @@ if (!isset($_SESSION['shipping_fee']) ||
 
 /* COMMON CODE -End- */
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    redirectToPage("payment_new.php?cart_type=$intCartType");
+    // redirectToPage("payment_new.php?cart_type=$intCartType");
+    redirectToPage("payment_payjp.php?cart_type=$intCartType");
 }
 
 $pageTitle = '注文内容の確認｜anyway-grapes.jp';
