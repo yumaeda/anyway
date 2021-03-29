@@ -61,7 +61,8 @@ function chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYe
         'card' => $token['id'],
         'amount' => $totalPayment,
         'capture' => $fCapture,
-        'currency' => 'jpy'
+        'currency' => 'jpy',
+        'description' => $orderId
     ));
 }
 
