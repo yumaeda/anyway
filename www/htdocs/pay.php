@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $orderEmail = 'order@anyway-grapes.jp';
             $archiveEmail = 'archive@anyway-grapes.jp';
 
-            require_once('./mails/text/payment_confirmed_mail_body.php');
+            require_once('./mails/text/airlink_payment_confirmed_mail_body.php');
             require(E_MAIL);
             sendMailAsPlainText(
                 $email,
