@@ -8,7 +8,7 @@ $inputErrors  = array();
 if (empty($_REQUEST['email']) ||
     (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL) == FALSE) ||
     empty($_REQUEST['amount']) ||
-    (intval($_REQUEST['amount']) < 100) ||
+    (intval($_REQUEST['amount']) < 1) ||
     empty($_REQUEST['order_id']))
 {
     exit('正しいパラメターが設定されていません。');
