@@ -5,6 +5,15 @@ require_once('./includes/config.inc.php');
 $errorMessage = '';
 $inputErrors  = array();
 
+if (empty($_REQUEST['email']) ||
+    (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL) == FALSE) ||
+    empty($_REQUEST['amount']) ||
+    (intval($_REQUEST['amount']) < 100) ||
+    empty($_REQUEST['order_id']))
+{
+    exit('正しいパラメターが設定されていません。');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     $email = getPostValue('email', true, $inputErrors);
