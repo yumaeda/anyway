@@ -57,13 +57,19 @@ function chargeWithPayjp($orderId, $totalPayment, $cardNumber, $expMonth, $expYe
 
     \Payjp\Payjp::setApiKey($PRIVATE_KEY);
 
-    return \Payjp\Charge::create(array(
+    $params = array(
         'card' => $token['id'],
         'amount' => $totalPayment,
         'capture' => $fCapture,
         'currency' => 'jpy',
         'description' => $orderId
-    ));
+    );
+
+    if ($fCapture == FALSE) {
+        $params['expiry_days'] = 60;
+    }
+
+    return \Payjp\Charge::create($params);
 }
 
 function convertPayjpErrorCodeToText($errorCode)
