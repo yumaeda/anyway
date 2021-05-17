@@ -9,6 +9,9 @@ echo date('m/d/Y', expired_at);
 ?>
 ```
 
+## Charges API
+- https://pay.jp/docs/authcapture
+
 &nbsp;
 
 ## GitHub master -> main
