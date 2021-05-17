@@ -1,0 +1,380 @@
+<?php
+
+if (!isset($_REQUEST['pc_view']) || ($_REQUEST['pc_view'] != 1))
+{
+    $strUserAgent = $_SERVER['HTTP_USER_AGENT'];
+
+    // Redirect iPhone/iPod visitors
+    if(strpos($strUserAgent, 'Android') ||
+       strpos($strUserAgent, 'iPhone') ||
+       strpos($strUserAgent, 'iPod'))
+    {
+        header("Location: ./s/index.php");
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <title>ワインのAnyway-Grapes｜世田谷区 経堂</title>
+        <meta name="description" content="東京都世田谷区の経堂にある、地下セラー型のワインショップです。気軽に楽しめるカジュアルなワインから、マニア垂涎の希少まで幅広いワインを取り揃えております。" />
+        <meta name="keywords" content="ワイン ショップ 小田急 東京 経堂 世田谷 Wine Shop Anyway Grapes" />
+        <script type="text/javascript">
+
+        document.createElement('header');
+        document.createElement('footer');
+
+        </script>
+        <style type="text/css">
+
+        *
+        {
+            padding: 0;
+            margin: 0;
+        }
+
+	html
+	{
+	    height: 100%;
+
+	    font-family: "KozGoPro-Light", "小塚ゴシック Pro L", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, "メイリオ", Meiryo, sans-serif;
+            font-size: 13px;
+	}
+
+        body
+        {
+            color: rgb(200, 200, 200);
+	    background-color: black;
+        }
+
+	header
+	{
+            width: 100%;
+	    height: 145px;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+
+	    z-index: 5;
+
+	    background-color: black;
+            opacity: 0.8;
+
+	    background-image: url("./images/_logo.png");
+	    background-repeat: no-repeat;
+	    background-position: center top; 
+	    background-size: 200px;
+
+            text-align: center;
+	}
+
+        ul
+        {
+            margin-top: 110px;
+        }
+
+        li
+        {
+	    display:inline-block;
+            padding: 0 15px 0 15px;
+	}
+
+        a
+        {
+            color: white;
+	    text-decoration: none;
+        }
+
+        li a
+	{
+	    font-family: Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            color: rgb(111, 95, 76);
+	}
+
+        img
+        {
+            vertical-align: bottom;
+        }
+
+	li a:link, li a:visited
+	{
+            color: rgb(111, 95, 76);
+	    text-decoration: none;
+	}
+
+	li a:hover, a:hover
+	{
+            color: white;
+	    text-decoration: underline;
+	}
+
+        div.contents
+        {
+            width: 100%;
+
+	    background-image: url("http://anyway-grapes.jp/images/bk_png8.png");
+	    background-size: 100%;
+
+            color: rgb(200,200,200);
+        }
+
+        div.mainContents
+        {
+            width: 750px;
+
+            padding: 200px 0 15px 0;
+            margin: 0 auto 0 auto;
+        }
+
+        div#adPane,div.navigationPane
+	{
+            color: rgb(111, 95, 76);
+            text-align: center;
+            padding: 40px;
+	}
+
+        div.navigationPane a
+        {
+            color: rgb(111, 95, 76);
+	    font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+	}
+
+        div.mainContents img
+        {
+            width: 600px;
+        }
+
+        h2
+        {
+	    font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+	</style>
+    </head>
+    <body>
+        <header>
+            <ul>
+                <li><a href="http://anyway-grapes.jp/store" class="onlineStoreLnk">Online Store</a></li>
+                <li><a href="https://www.facebook.com/WINE-SHOP-Anyway-Grapes-500910809965433/" class="fbLnk">Facebook</a></li>
+                <li><a href="http://anyway-grapes.jp/blog" class="blogLnk">Blog</a></li>
+                <li><a href="http://us8.campaign-archive2.com/home/?u=0ad89bde4937b5d71a1175566&id=136d202046" class="mailMagazineLnk">Mail Magazine</a></li>
+                <li><a href="#" class="wholesaleLnk">Wholesale</a></li>
+                <li><a href="#" class="accessLnk">Access</a></li>
+            </ul>
+        </header>
+        <div class="contents">
+            <div class="mainContents">
+                地下１階に店舗を構えている当店では、厳格な温度管理と湿度管理を行っており、取り扱っているワインの品質には万全を期しています。現地から日本国内までリーファーコンテナで運んでいるワインは現地のままの味を、その他のワインもインポーターの出荷時と同じクオリティを保っております。<br />
+                <br /><br /><br />
+                <h2 style="margin-bottom:35px;">OUR WINE</h2>
+                <p>
+		    ブランド、流行にはこだわらず、人の手によって丁寧に扱われた葡萄からできたワイン、小規模生産者の思いの詰まったワインを多数取り揃えました。 商品は1000アイテム以上。毎日を楽しくする1000円台のデイリーワインから特別な日を華やかに演出するグラン・ヴァンやシャンパーニュ、入手困難なバックビンテージ、生産量の少ない希少アイテムなど幅広い品揃えでお客様に一人一人のお好みや目的に合わせた１本をお探し致します。ワインを保管するセラーだけでなく、ワインの売り場も徹底した温度管理と湿度管理をしています。
+		</p>
+                <br /><br /><br />
+                <h2 style="margin-bottom:35px;">CONCIERGE</h2>
+                <p>
+		    20年間飲食事業に携わった経験を生かし、ご予算や好みのタイプに合わせて日々の家庭料理と相性のいいワインをご提案させて頂きます。
+                </p>
+                <br /><br /><br />
+                <h2 style="margin-bottom:35px;">NATURAL FOOD</h2>
+                <p>
+		    時間と手間をかけて造られたオーガニックヴィネガー、オリーブオイル、ルイボスティー、マスタード、はちみつ、ドライフルーツ、ナチュラル・ジュースなど、日々の食事を大切にしたい人におすすめのナチュラル・フードをご用意しております。ちょっとしたギフトにも最適です。
+		</p>
+                <br /><br /><br />
+                <h2 style="margin-bottom:35px;">TASTING EVENT</h2>
+                <p>
+		    姉妹店Mitsu-Getsuなどのレストランとコラボしたワイン会や生産者の話が直接聞けるメーカーズ・ディナー、季節やテーマに合わせたお買い得なワインの試飲販売会などを定期的に開催致します。イベントの詳細はブログやフェイスブックにてご案内しております。
+                </p>
+                <br />
+                <div id="adPane">
+                    <!--
+                    <a href="https://goo.gl/Py1dhR"><img src="http://anyway-grapes.jp/images/jura_tasting.png" alt="2017.02.05(日)ジュラ・ワイン試飲販売会" style="opacity:0.7;" /></a>
+                    <br /><br />
+                    -->
+                    <a id="tasting-link" href="#">&gt;&gt;&nbsp;過去の試飲イベント</a>
+                </div>
+            </div>
+        </div>
+        <div class="navigationPane"></div>
+        <div class="instagram"></div>
+        <div class="navigationPane"></div>
+        <iframe id="access-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.033145362007!2d139.634685!3d35.65155499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f3be02000bab%3A0xa52fa7406d77ee45!2sConceptual+Wine+Boutique+Anyway-Grapes!5e0!3m2!1sja!2sjp!4v1410321668722" width="100%" height="400" scrolling="no" frameborder="0"></iframe>
+        <footer style="text-align:center;">
+            <h3>Conceptual Wine Boutique Anyway-Grapes</h3>
+            〒156-0052&nbsp;&nbsp;東京都世田谷区経堂 2-13-1 B1F<br />
+            営業時間: 10時～20時 【定休日:　火曜】<br /><br />
+            <span class="numberText">03-6413-9737 (Tel)&nbsp;&nbsp;/&nbsp;&nbsp;03-6413-9736 (Fax)<br /></span>
+            <a href="mailto:mail@anyway-grapes.jp">mail@anyway-grapes.jp</a>
+            <br><br>
+            <p>
+                飲酒は20歳になってから。飲酒運転は法律で禁止されています。<br>
+                妊娠中や授乳期の飲酒は、胎児・乳児の発育に悪影響を与えるおそれがあります。 
+            </p>
+        </footer>
+        <br /><br /><br /><br />
+        <iframe id="wholesale" src="./pages/business_sale.html" width="100%" height="600" frameborder="0" style="display:none;"></iframe>
+        <br /><br /><br /><br />
+        <br /><br /><br /><br />
+        <br /><br /><br /><br />
+        <br /><br /><br /><br />
+        <br /><br /><br /><br />
+    </body>
+</html>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+
+function resizeImage()
+{
+    var imgWidth = $('body').width() / 10;
+    $('img.instagramImg').width(imgWidth);
+}
+
+function renderNavigations()
+{
+    var html =
+        '<a href="http://anyway-grapes.jp/store">Online Store</a>' +
+        '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' +
+        '<a href="https://www.facebook.com/WINE-SHOP-Anyway-Grapes-500910809965433/">Facebook</a>' +
+        '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' +
+        '<a href="http://anyway-grapes.jp/blog">Blog</a>' +
+        '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' +
+        '<a href="http://us8.campaign-archive2.com/home/?u=0ad89bde4937b5d71a1175566&id=136d202046">Mail Magazine</a>';
+
+    $('div.navigationPane').html(html);
+}
+
+$(document).ready(function()
+{
+    renderNavigations();
+
+    $.ajax(
+    {
+        url: './instagram_request.php',
+        type: 'POST',
+        dataType: 'json',
+        error: function() {},
+        success: function(jsonResponse)
+        {
+            var html     = '',
+                rgobjImg = jsonResponse.data,
+                cImg     = rgobjImg.length,
+                objImg   = null;
+
+            for (var i = 0; i < cImg; ++i)
+            {
+                objImg = rgobjImg[i];
+                html += '<a href="' + objImg.link + '" target="_blank"><img class="instagramImg" src="' + objImg.images.low_resolution.url + '" /></a>';
+            }
+
+            $('div.instagram').html(html);
+            resizeImage();
+        }
+    });
+
+    $(window).resize(function()
+    {
+        resizeImage();
+        $('iframe#wholesale').attr('src', $('iframe#wholesale').attr('src'));
+        $('iframe#access-map').attr('src', $('iframe#access-map').attr('src'));
+    });
+
+    $('div.contents').click(function(e)
+    {
+        if ($('header').is(':hidden'))
+        {
+            $('header').fadeIn(500);
+        }
+
+        return false;
+    });
+
+    $('a.onlineStoreLnk').hover(function()
+    {
+        $(this).html('オンラインショップ');
+    }, 
+    function()
+    {
+        $(this).html('Online Store');
+    });
+
+    $('a.fbLnk').hover(function()
+    {
+        $(this).html('フェイスブック');
+    }, 
+    function()
+    {
+        $(this).html('Facebook');
+    });
+
+    $('a.blogLnk').hover(function()
+    {
+        $(this).html('ブログ');
+    }, 
+    function()
+    {
+        $(this).html('Blog');
+    });
+
+    $('a.mailMagazineLnk').hover(function()
+    {
+        $(this).html('メルマガ');
+    }, 
+    function()
+    {
+        $(this).html('Mail Magazine');
+    });
+
+    $('a.accessLnk').hover(function()
+    {
+        $(this).html('アクセスマップ');
+    }, 
+    function()
+    {
+        $(this).html('Access');
+    });
+
+    $('a.accessLnk').click(function(e)
+    {
+        $('html,body').animate({ scrollTop: $('iframe#access-map').offset().top }, { queue : false });
+        $('header').fadeOut(500);
+        $('iframe#wholesale').fadeOut(500);
+
+        return false;
+    });
+
+    $('a.wholesaleLnk').hover(function()
+    {
+        $(this).html('業務販売');
+    }, 
+    function()
+    {
+        $(this).html('Wholesale');
+    });
+
+    $('a.wholesaleLnk').click(function(e)
+    {
+        var $iframe = $('iframe#wholesale').fadeIn(500);
+        $iframe.fadeIn(500);
+
+        $('html,body').animate({ scrollTop: $iframe.offset().top }, { queue : false });
+        $('header').fadeOut(500);
+
+        return false;
+    });
+
+    $('div#adPane').click('tasting-link', function()
+    {
+        location.href = 'http://anyway-grapes.jp/store/index.php?pc_view=1&submenu=photo&type=13';
+    });
+});
+
+</script>
+
